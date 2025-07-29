@@ -1,0 +1,176 @@
+main {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+main {
+    
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+}
+
+td {
+    text-align: left;
+}
+
+td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(7), td:nth-child(8), td:nth-child(9) {
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+table td {
+    padding: 10px;
+    word-wrap: break-word;
+}
+
+@media screen and (max-width: 768px) {
+    table, thead, tmain, th, td, tr {
+        display: block;
+    }
+
+    th, td {
+        padding: 15px;
+        text-align: right;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    td {
+        text-align: left;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+
+    tr {
+        margin-bottom: 10px;
+    }
+}
+header {
+    background-color: #333; /* Màu nền cho header */
+    color: #fff; /* Màu chữ trong header */
+    padding: 20px;
+    text-align: center;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #444; /* Màu nền cho menu */
+}
+
+.tab-button {
+    text-decoration: none;
+    background-color: transparent; /* Nền trong suốt cho các nút tab */
+    border: none;
+    color: #fff; /* Màu chữ cho nút tab */
+    padding: 15px 20px;
+    cursor: pointer; /* Con trỏ khi di chuột vào nút */
+    font-size: 16px;
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu nền */
+}
+
+.tab-button:hover {
+    background-color: #555; /* Màu nền khi di chuột */
+}
+
+.tab-button.active {
+    background-color: #007bff; /* Màu nền cho tab đang hoạt động */
+    color: #fff; /* Màu chữ cho tab đang hoạt động */
+    border-radius: 5px; /* Bo góc cho tab đang hoạt động */
+}
+
+.tab-content {
+    display: none; /* Ẩn tất cả các tab nội dung */
+    padding: 20px;
+    background-color: #fff; /* Màu nền cho nội dung tab */
+    border: 1px solid #ccc; /* Viền cho nội dung tab */
+    border-radius: 5px; /* Bo góc cho nội dung tab */
+    margin: 20px; /* Khoảng cách cho nội dung tab */
+}
+
+.tab-content.active {
+    display: block; /* Hiển thị tab nội dung đang hoạt động */
+}
+.admin-header .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+       
+    }
+
+    .admin-header .admin-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 540px;
+    }
+
+    .admin-header .user-actions {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .admin-header .user-actions li {
+        display: inline-block;
+        margin-left: 20px;
+    }
+
+    .admin-header .user-actions a {
+        text-decoration: none;
+        color: #fff;
+        
+        padding: 8px 16px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    body {
+        margin: 0;
+    }

@@ -1,0 +1,342 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background: #35424a;
+    color: #ffffff;
+    padding: 10px 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+}
+
+nav a, nav img {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.3s;
+    font-size: 18px;
+}
+
+nav a:hover {
+    color: #f4f4f4;
+}
+
+main {
+    flex: 1;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #35424a;
+    margin-bottom: 10px;
+}
+
+#cart-items {
+    margin: 20px 0;
+}
+
+#cart-items div {
+    /* border: 1px solid #ddd; */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+}
+
+.cart-item-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.cart-item-info img {
+    max-width: 100px;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+}
+
+.cart-item-controls button {
+    background-color: #35424a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cart-item-controls button:hover {
+    background-color: #474c52;
+}
+
+.total {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #35424a;
+    color: #ffffff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.checkout-btn {
+    background-color: #35424a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+}
+
+.checkout-btn:hover {
+    background-color: #474c52;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Căn đều giữa các phần tử */
+    padding: 10px 0;
+    width: 100%;
+}
+
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    flex: 2; /* Đặt flex để chiếm nhiều không gian hơn */
+}
+
+.cart-item-info img {
+    width: 70px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.cart-item-name {
+    text-overflow: ellipsis;
+    max-width: 240px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.cart-item-price, .cart-item-total {
+    flex: 1;
+    text-align: center; /* Căn giữa theo chiều ngang */
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center;
+}
+
+
+.cart-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    flex: 1;
+}
+
+.cart-controls input {
+    width: 40px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.cart-remove-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    flex: 0.5; /* Căn chỉnh nút xoá để không chiếm nhiều không gian */
+    text-align: center;
+}
+
+.cart-remove-btn:hover {
+    background-color: #e60000;
+}
+  
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+.cart-header,   
+.cart-item {
+display: grid;
+grid-template-columns:  5% 38% 16% 18% 13% 8%;
+align-items: center;
+padding: 10px 0;
+border-bottom: 1px solid #ddd;
+
+}
+
+.cart-header {
+    font-weight: bold;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.cart-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-controls button {
+    padding: 5px 10px;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+}
+
+.cart-controls button:hover {
+    background-color: #ccc;
+}
+
+.cart-controls input {
+    width: 50px;
+    max-width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+}
+
+.cart-total,
+.remove-selected {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.remove-selected button,
+.checkout-btn {
+    background-color: gray;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    flex-shrink: 0; /* Đảm bảo các nút không bị co lại khi số lớn */
+}
+
+.remove-selected button:hover,
+.checkout-btn:hover {
+    background-color: #ff5722;
+}
+
+
+/* nav */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: Arial, sans-serif;
+}
+
+.navbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: linear-gradient(to bottom, #705ad3, #d5d5d5);
+padding: 10px 20px;
+}
+
+.logo {
+display: flex;
+align-items: center;
+}
+
+.logo img {
+width: 50px; /* Kích thước logo */
+height: 50px;
+object-fit: cover;
+margin-right: 10px; /* Khoảng cách giữa logo và tên shop */
+}
+
+.shop-name {
+font-size: 24px; /* Kích thước chữ cho tên shop */
+font-weight: bold;
+color: white; /* Màu chữ */
+}
+
+.nav-links {
+display: flex;
+align-items: center;
+gap: 20px; /* Khoảng cách giữa các liên kết */
+}
+
+.nav-links a {
+color: white; /* Màu chữ cho các liên kết */
+text-decoration: none; /* Không gạch chân */
+font-size: 16px; /* Kích thước chữ cho liên kết */
+position: relative; /* Để dễ dàng quản lý khi hover */
+}
+
+.nav-links a i {
+margin-right: 8px; /* Khoảng cách giữa biểu tượng và chữ */
+}
+
+.nav-links a:hover {
+color: rgb(125, 124, 124); /* Đổi màu chữ thành màu xám khi hover */
+}
+.tensp{
+text-overflow: ellipsis;
+max-width: 150px;
+overflow: hidden;
+}
+/* trang chủ */

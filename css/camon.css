@@ -1,0 +1,94 @@
+/* hoadon.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    max-width: 1000px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 30px;
+    font-size: 32px;
+}
+
+.customer-info, .order-info {
+    margin-bottom: 20px;
+}
+
+.customer-info p, .order-info p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 5px 0;
+}
+
+strong {
+    color: #333;
+}
+
+.order-details {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-details th, .order-details td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.order-details th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+}
+
+.order-details td {
+    background-color: #f9f9f9;
+    font-size: 15px;
+}
+
+.order-details td:nth-child(4) {
+    font-weight: bold;
+    color: #e91e63;
+}
+
+.order-details tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.footer p {
+    font-size: 18px;
+    color: #555;
+}
+
+.footer a {
+    text-decoration: none;
+    color: white;
+    background-color: #4CAF50;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.footer a:hover {
+    background-color: #45a049;
+}

@@ -1,0 +1,263 @@
+        /* Căn chỉnh cho hai phần form và bảng danh sách */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        
+        /* Định dạng phần form thêm/sửa tài khoản */
+        .form-container {
+            width: 45%; /* Chiếm 45% chiều rộng màn hình */
+        }
+        
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Chiều rộng form là 100% của phần form-container */
+        }
+        
+        .form-container form label,
+        .form-container form input {
+            margin-bottom: 10px;
+        }
+        
+        /* Định dạng bảng danh sách người dùng */
+        .table-container {
+            width: 50%; /* Chiếm 50% chiều rộng màn hình */
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table, th, td {
+            border: 1px solid black;
+        }
+        
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+        
+        /* Định dạng tổng thể */
+        main {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+        
+        h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        
+        /* Bố cục chứa cả form và bảng danh sách */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1200px;
+        }
+        
+        /* Định dạng phần form thêm/sửa tài khoản */
+        .form-container {
+            width: 35%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        .form-container form label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .form-container form input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            font-size: 14px;
+            color: #495057;
+        }
+        
+        .form-container form input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .form-container form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Định dạng bảng danh sách người dùng */
+        .table-container {
+            width:60%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-height: 444px;
+            overflow-y: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #343a40;
+            color: #fff;
+        }
+        
+        td {
+            background-color: #f8f9fa;
+        }
+        
+        table tmain tr:nth-child(even) td {
+            background-color: #e9ecef;
+        }
+        
+        /* Hiệu ứng hover cho các hàng trong bảng */
+        table tmain tr:hover td {
+            background-color: #dee2e6;
+        }
+        
+        /* Liên kết hành động (sửa, xóa) */
+        a {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+        
+        
+        /* Thông báo thành công và lỗi */
+        p {
+            font-size: 14px;
+            color: #28a745;
+            text-align: center;
+        }
+        header {
+            background-color: #333; /* Màu nền cho header */
+            color: #fff; /* Màu chữ trong header */
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            background-color: #444; /* Màu nền cho menu */
+        }
+        
+        .tab-button {
+            text-decoration: none;
+            background-color: transparent; /* Nền trong suốt cho các nút tab */
+            border: none;
+            color: #fff; /* Màu chữ cho nút tab */
+            padding: 15px 20px;
+            cursor: pointer; /* Con trỏ khi di chuột vào nút */
+            font-size: 16px;
+            transition: background-color 0.3s; /* Hiệu ứng chuyển màu nền */
+        }
+        
+        .tab-button:hover {
+            background-color: #555; /* Màu nền khi di chuột */
+        }
+        
+        .tab-button.active {
+            background-color: #007bff; /* Màu nền cho tab đang hoạt động */
+            color: #fff; /* Màu chữ cho tab đang hoạt động */
+            border-radius: 5px; /* Bo góc cho tab đang hoạt động */
+        }
+        
+        .tab-content {
+            display: none; /* Ẩn tất cả các tab nội dung */
+            padding: 20px;
+            background-color: #fff; /* Màu nền cho nội dung tab */
+            border: 1px solid #ccc; /* Viền cho nội dung tab */
+            border-radius: 5px; /* Bo góc cho nội dung tab */
+            margin: 20px; /* Khoảng cách cho nội dung tab */
+        }
+        
+        .tab-content.active {
+            display: block; /* Hiển thị tab nội dung đang hoạt động */
+        }
+        .admin-header .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+               
+            }
+        
+            .admin-header .admin-title {
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-left: 540px;
+            }
+        
+            .admin-header .user-actions {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+        
+            .admin-header .user-actions li {
+                display: inline-block;
+                margin-left: 20px;
+            }
+        
+            .admin-header .user-actions a {
+                text-decoration: none;
+                color: #fff;
+                
+                padding: 8px 16px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            body {
+                margin: 0;
+            }

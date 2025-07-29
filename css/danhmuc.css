@@ -1,0 +1,65 @@
+.category-container  {
+    display: flex;
+    justify-content: center;
+    
+    flex-wrap: wrap;
+    gap: 1px;
+    width: 78%; /* Tăng chiều rộng của container */
+    margin: 0 auto; /* Để canh giữa container */
+    background-color: white;
+    padding-left: 45px;
+}
+        .category-item a {
+            text-align: center;
+            margin: 4px;
+            border: 2px solid #ddd;
+            padding: 10px;
+            background-color: white;
+            width: 140px; /* Giới hạn chiều rộng của khung */
+            height: 160px; /* Tự điều chỉnh chiều cao theo nội dung */
+            box-sizing: border-box; /* Bao gồm padding và border trong kích thước khung */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .category-item img  {
+            width: 80px; /* Giảm kích thước hình ảnh */
+            height: 80px; /* Giảm kích thước hình ảnh */
+            border-radius: 50%; /* Tạo hình tròn cho hình ảnh */
+            object-fit: cover;
+            max-width: 200px;
+             /* Bỏ khung quanh hình ảnh */
+        }
+
+
+        .category-item  p {
+            font-size: 16px; /* Giảm kích thước chữ */
+            margin-top: 5px;
+            word-wrap: break-word; /* Chia nhỏ từ khi quá dài */
+            white-space: normal; /* Đảm bảo văn bản xuống dòng */
+
+        }
+        .category-container a{
+            background-color:white;
+            padding-top: 5px;
+    padding-right: 20px;
+    padding-left: 20px;
+    }
+    .dm h1 {
+        color: rgba(0, 0, 0, .54);
+        font-size: 30px; /* Tăng kích thước chữ "Danh Mục" */
+        padding: 0 1.25rem;
+        padding-top: 10px;
+    }
+   .dm{
+
+    width: 78%; /* Điều chỉnh bề ngang của container */
+    margin: 0 auto; /* Để canh giữa container */
+    background-color: white;
+   }
+   .category-item:hover a {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 2px solid gray; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}

@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+body {
+    background-color: #f5f5f5;
+}
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 1.5rem;
+}
+nav {
+    background-color: #444;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+}
+.tabs {
+    display: flex;
+    gap: 20px;
+}
+.tab-button {
+    background: none;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.tab-button:hover, .tab-button.active {
+    background-color: #666;
+}
+main {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+footer {
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #888;
+}
+h1 {
+    color: #3399ff !important;
+    font-weight: 700;
+}
+h2 {
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+/* Styling buttons and inputs in included forms */
+input[type="submit"], button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+input[type="submit"]:hover, button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,400 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+}
+.product {
+    display: flex;
+}
+.product-images, .product-details {
+    flex: 1;
+    padding: 20px;
+}
+.product-images img {
+    /* width: 80%; */
+    height: 390px !important;
+    object-fit: contain; /* Đảm bảo ảnh giữ tỷ lệ */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.product-details h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.product-details .price {
+    background-color: #fafafa;
+    padding: 10px 20px;
+    font-size: 30px;
+    color: #ee4d2d;
+    margin: 15px auto;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+
+}
+.rating {
+    font-size: 18px;
+    color: #555;
+}
+.buttons {
+    margin-top: 20px;
+}
+.buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+.buy-button {
+    background-color: #007bff;
+    color: #fff;
+}
+/* Áp dụng cho nút Mua ngay */
+.bg-primary:hover {
+background-color: #808080; /* Màu xám */
+color: #ffffff; /* Màu chữ trắng */
+}
+
+/* Áp dụng cho nút Thêm vào giỏ hàng */
+.bg-accent:hover {
+background-color: #808080; /* Màu xám */
+color: #ffffff; /* Màu chữ trắng */
+}
+.cart-button {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+.quantity-selector {
+    margin-top: 20px;
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.quantity-selector label {
+    margin-right: 10px;
+    font-size: 16px;
+}
+.quantity-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.quantity-input input {
+    width: 40px;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+.quantity-btn {
+    background-color: #f8f8f8;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.quantity-btn:hover {
+    background-color: #ddd;
+}
+.color-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+.color-option {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s, color 0.3s;
+    position: relative;
+}
+.color-option img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 3px;
+}
+.color-option span {
+    font-size: 16px;
+}
+.selected {
+    border-color: #ff4500;
+    color: #ff4500;
+}
+.selected::after {
+    content: "✔";
+    font-size: 16px;
+    color: #ff4500;
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+}
+.ghichu {
+    color: #555;
+    margin: 10px 0;
+}
+.discount{
+    background-color: #ff4500;
+    border-radius: 2px;
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 600;
+    line-height: 1;
+    margin-left: 15px;
+    padding: 2px 4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 70px;
+}
+
+
+
+@layer base {
+    :root {
+        --background: 0 0% 96%;
+        --foreground: 0 0% 3.9%;
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 3.9%;
+        --primary: 0 0% 9%;
+        --primary-foreground: 0 0% 98%;
+        --secondary: 0 0% 96.1%;
+        --secondary-foreground: 0 0% 9%;
+        --muted: 0 0% 96.1%;
+        --muted-foreground: 0 0% 45.1%;
+        --accent: 0 0% 96.1%;
+        --accent-foreground: 0 0% 9%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 89.8%;
+        --input: 0 0% 89.8%;
+        --ring: 0 0% 3.9%;
+    }
+    .dark {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+    }
+}
+
+/* Thêm vào file trangchu.css */
+.bg-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bg-card:hover {
+    transform: translateY(-2px) scale(1); /* Phóng to nhẹ và di chuyển lên trên */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ */
+}
+
+
+.bg-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.bg-card img {
+    height: 200px; /* Điều chỉnh theo kích thước phù hợp */
+    object-fit: cover; /* Đảm bảo ảnh không bị biến dạng */
+    width: 100%;
+}
+
+.bg-card h2, .bg-card p, .bg-card span, .bg-card button {
+    margin-bottom: 8px;
+}
+
+.bg-card button {
+    margin-top: auto; /* Đưa nút xuống dưới cùng */
+}
+
+.grid-containe {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+        /* Ghi đè các quy tắc của nav */
+        nav.custom-nav {
+            text-align: white;
+            
+            background: linear-gradient(to bottom, #705ad3, #d5d5d5) !important; /* Tạo gradient cho nền nav */
+            color: var(--primary-foreground) !important; /* Màu chữ của nav */
+            padding: 15px !important; /* Khoảng cách trong nav */
+        }
+
+        /* Tạo khoảng cách phía trên để tránh phần header che khuất nội dung */
+        .custom-header-offset {
+            padding-top: 0% !important; /* Điều chỉnh padding-top nếu cần */
+        }
+
+        /* Ghi đè các quy tắc của các liên kết trong nav */
+        a.custom-dangky, a.custom-dangnhap {
+            color: rgb(255, 255, 255) !important; /* Màu chữ trắng mặc định */
+            text-decoration: none !important; /* Xóa gạch chân mặc định */
+            transition: color 0.3s ease !important; /* Hiệu ứng chuyển màu mượt mà */
+        }
+
+        a.custom-dangky:hover, a.custom-dangnhap:hover {
+            color: rgb(125, 124, 124) !important; /* Đổi màu chữ thành màu xám khi hover */
+        }
+
+        /* Tăng chi tiết cho container của nav để ghi đè sanpham.css nếu cần */
+        nav.custom-nav .containe {
+            max-width: 1200px !important; /* Đảm bảo kích thước max cho container */
+            margin: 0 auto !important; /* Căn giữa nội dung trong nav */
+            display: flex !important; /* Đảm bảo flex cho các phần tử */
+            justify-content: space-between !important; /* Căn đều hai bên */
+            align-items: center !important; /* Căn giữa theo chiều dọc */
+        }
+
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, #705ad3, #d5d5d5);
+            padding: 10px 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            width: 50px; /* Kích thước logo */
+            height: 50px;
+            object-fit: cover;
+            margin-right: 10px; /* Khoảng cách giữa logo và tên shop */
+        }
+        
+        .shop-name {
+            font-size: 24px; /* Kích thước chữ cho tên shop */
+            font-weight: bold;
+            color: white; /* Màu chữ */
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            
+        }
+        
+        .nav-links a {
+            color: white; /* Màu chữ cho các liên kết */
+            text-decoration: none; /* Không gạch chân */
+            font-size: 16px; /* Kích thước chữ cho liên kết */
+            position: relative; /* Để dễ dàng quản lý khi hover */
+        }
+        
+        .nav-links a i {
+            margin-right: 8px; /* Khoảng cách giữa biểu tượng và chữ */
+        }
+        
+        .nav-links a:hover {
+            color: rgb(125, 124, 124); /* Đổi màu chữ thành màu xám khi hover */
+        }
+        nav a , nav img{
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .giohang{
+            height: 40px;
+            width: 40px;
+            margin: 0%;
+        }
+                        /* nav */
+                .ten {
+    display: inline-block  ;
+    max-width: 50px  ; /* Bạn có thể điều chỉnh lại kích thước phù hợp */
+    white-space: nowrap  ;
+    overflow: hidden  ;
+    text-overflow: ellipsis  ;
+    vertical-align: middle  ;
+}
+li {
+    list-style-type: none; /* Ẩn dấu chấm trong li */
+}
+
+.icon{
+    width: 30px;
+    height: 30px;
+    display: block; /* Để icon trở thành một khối riêng, giúp tên hiển thị dưới nó */
+    margin: 0 auto; /* Căn giữa icon nếu cần */
+}
+/* CSS cho thông báo */
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Màu nền thông báo (xanh lá cây cho thông báo thành công) */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.notification.hidden {
+    display: none;
+}
+
+.notification.show {
+    display: block;
+    opacity: 1;
+}
+.zoom-container {
+    position: relative;
+    overflow: hidden;
+    width: 400px; /* Điều chỉnh kích thước khung chứa ảnh */
+    height: 400px; /* Điều chỉnh kích thước khung chứa ảnh */
+}
+
+.zoom-image {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease, transform-origin 0.3s ease;
+    cursor: zoom-in;
+}
+
+/* Trạng thái khi phóng to */
+.zoomed {
+    transform: scale(2); /* Mức độ phóng to, bạn có thể điều chỉnh */
+    cursor: zoom-out;
+}

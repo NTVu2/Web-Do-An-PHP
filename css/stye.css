@@ -1,0 +1,279 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #e0f7fa;
+    padding: 50px;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    margin-bottom: 20px;
+}
+
+.input-field span {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+.input-field input:focus {
+    border-color: #28a745;
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #6cd76c;
+}
+
+button:active {
+    background-color: #1e7e34;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+/* 
+đăng nhập  */
+/* Container dành riêng cho form đăng nhập */
+.login-wrapper {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3e5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #333;
+}
+
+/* Định dạng trường input cho form đăng nhập */
+.login-input-field {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-input-field label {
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+    font-weight: 500;
+}
+
+.login-input-field input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.login-input-field input:focus {
+    border-color: #7b1fa2;
+    outline: none;
+}
+
+/* Nút đăng nhập */
+.login-button {
+    width: 100%;
+    padding: 14px;
+    background-color: #7b1fa2;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #a050b7;
+}
+
+.login-button:active {
+    background-color: #6a1b9a;
+}
+
+/* Link đăng ký tài khoản */
+.login-container p {
+    margin-top: 25px;
+    color: #333;
+}
+
+.login-container p a {
+    color: #7b1fa2;
+    text-decoration: none;
+}
+
+.login-container p a:hover {
+    text-decoration: underline;
+}
+
+/* Định dạng responsive */
+@media (max-width: 600px) {
+    .login-container {
+        padding: 25px;
+    }
+}
+
+
+/* đăng ký */
+/* Container dành riêng cho form đăng ký */
+.register-wrapper {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3e5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.register-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.register-container h2 {
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #333;
+}
+
+/* Định dạng trường input cho form đăng ký */
+.register-input-field {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.register-input-field label {
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+    font-weight: 500;
+}
+
+.register-input-field input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+}
+
+.register-input-field input:focus {
+    border-color: #7b1fa2;
+    outline: none;
+}
+
+/* Nút đăng ký */
+.register-button {
+    width: 100%;
+    padding: 14px;
+    background-color: #7b1fa2;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #a050b7;
+}
+
+.register-button:active {
+    background-color: #6a1b9a;
+}
+
+/* Link đăng nhập */
+.register-container p {
+    margin-top: 25px;
+    color: #333;
+}
+
+.register-container p a {
+    color: #7b1fa2;
+    text-decoration: none;
+}
+
+.register-container p a:hover {
+    text-decoration: underline;
+}
+
+/* Định dạng responsive */
+@media (max-width: 600px) {
+    .register-container {
+        padding: 25px;
+    }
+}
+
+
+

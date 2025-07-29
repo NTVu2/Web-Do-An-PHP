@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.order-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.order-list th, .order-list td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    color: #333;
+}
+
+.order-list th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.order-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.order-list a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.order-list a:hover {
+    color: #0056b3;
+}
+
+.order-list td {
+    font-size: 16px;
+}
+
+/* Nút xóa */
+.btn-delete {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #ff3333;
+}
+
+/* Thông báo */
+.alert {
+    background-color: #28a745;
+    color: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.alert.error {
+    background-color: #dc3545;
+}
+.navbar {
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, #705ad3, #d5d5d5);
+    padding: 10px 20px;
+    }
+    .logo {
+display: flex;
+align-items: center;
+}
+.logo img {
+width: 50px; /* Kích thước logo */
+height: 50px;
+object-fit: cover;
+margin-right: 10px; /* Khoảng cách giữa logo và tên shop */
+}
+
+.shop-name {
+   
+font-size: 24px; /* Kích thước chữ cho tên shop */
+font-weight: bold;
+color: white; /* Màu chữ */
+}
+
+.nav-links {
+display: flex;
+align-items: center;
+gap: 20px; /* Khoảng cách giữa các liên kết */
+}
+
+.nav-links a {
+color: white; /* Màu chữ cho các liên kết */
+
+font-size: 16px; /* Kích thước chữ cho liên kết */
+position: relative; /* Để dễ dàng quản lý khi hover */
+}
