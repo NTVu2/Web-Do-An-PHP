@@ -320,7 +320,7 @@ for ($day = 1; $day <= $daysInMonth; $day++) {
         <?php endforeach; ?>
         <tr style="font-weight:bold; background-color:#f2f2f2;">
             <td>Tổng Tháng</td>
-            <td><?php echo number_format($sumRevenue, 0, ',', '.'); ?></td>
+            <td><?php echo number_format($sumRevenue, 0, ',', '.'); ?>    </td>
             <td><?php echo $sumOrders; ?></td>
         </tr>
     </tbody>
