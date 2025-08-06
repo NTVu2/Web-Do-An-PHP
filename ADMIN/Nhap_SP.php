@@ -49,18 +49,22 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['Mahang']
 // Tự động tạo mã hàng mới nếu đang thêm mới sản phẩm
 if (!$isEditing) {
     // Lấy mã hàng mới nhất để tạo mã hàng tự động
-    $sql_last_code = "SELECT Mahang FROM hang ORDER BY Mahang DESC LIMIT 1";
-    $result_last_code = mysqli_query($con, $sql_last_code);
-    $last_code = mysqli_fetch_assoc($result_last_code)['Mahang'];
+   $sql_last_code = "SELECT Mahang FROM hang WHERE Mahang REGEXP '^H[0-9]+$'";
+$result_last_code = mysqli_query($con, $sql_last_code);
 
-    // Tăng giá trị mã hàng lên
-    if ($last_code) {
-        $number_part = (int)substr($last_code, 1); // Lấy phần số từ mã hàng
-        $number_part++; // Tăng phần số lên 1
-        $Mahang = 'H' . str_pad($number_part, 3, '0', STR_PAD_LEFT); // Tạo mã mới
-    } else {
-        $Mahang = 'H001'; // Nếu không có mã hàng nào, khởi tạo mã đầu tiên
+$max_number = 0;
+
+while ($row = mysqli_fetch_assoc($result_last_code)) {
+    $number_part = (int)substr($row['Mahang'], 1); // Lấy phần số, bỏ chữ H
+    if ($number_part > $max_number) {
+        $max_number = $number_part;
     }
+}
+
+// Tăng mã mới
+$number_part = $max_number + 1;
+$Mahang = 'H' . str_pad($number_part, 3, '0', STR_PAD_LEFT);
+
 }
 
 
@@ -106,20 +110,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $_SESSION['thongbao'] = array('type' => 'success', 'message' => 'Sản phẩm đã được cập nhật thành công!');
     } else {
-        // Thêm mới sản phẩm
-        $sql_insert = "INSERT INTO hang (Mahang, Tenhang, Donvido, Mota, Maloaihang, Soluongton, Dongia, anh) 
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+       // Thêm mới sản phẩm
+$sql_insert = "INSERT INTO hang (Mahang, Tenhang, Donvido, Mota, Maloaihang, Soluongton, Dongia, anh) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt_insert = mysqli_prepare($con, $sql_insert);
 mysqli_stmt_bind_param($stmt_insert, "ssssiiss", $Mahang, $Tenhang, $Donvido, $Mota, $Maloaihang, $Soluongton, $Dongia, $anh);
-mysqli_stmt_execute($stmt_insert);
 
-        // Thêm mới chi tiết sản phẩm
-        $sql_insert_details = "INSERT INTO chitiet_sanpham (Mahang, Thongso, baohanh, giagoc, voicher) VALUES (?, ?, ?, ?, ?)";
-        $stmt_insert_details = mysqli_prepare($con, $sql_insert_details);
-        mysqli_stmt_bind_param($stmt_insert_details, "sssss", $Mahang, $thongso, $baohanh, $giagoc, $voicher);
-        mysqli_stmt_execute($stmt_insert_details);
+// Kiểm tra kết quả thực thi
+if (!mysqli_stmt_execute($stmt_insert)) {
+    die("Lỗi khi thêm sản phẩm vào bảng 'hang': " . mysqli_stmt_error($stmt_insert));
+}
 
-        $_SESSION['thongbao'] = array('type' => 'success', 'message' => 'Sản phẩm đã được thêm thành công!');
+// Thêm mới chi tiết sản phẩm
+$sql_insert_details = "INSERT INTO chitiet_sanpham (Mahang, Thongso, baohanh, giagoc, voicher) VALUES (?, ?, ?, ?, ?)";
+$stmt_insert_details = mysqli_prepare($con, $sql_insert_details);
+mysqli_stmt_bind_param($stmt_insert_details, "sssss", $Mahang, $thongso, $baohanh, $giagoc, $voicher);
+
+if (!mysqli_stmt_execute($stmt_insert_details)) {
+    die("Lỗi khi thêm vào bảng 'chitiet_sanpham': " . mysqli_stmt_error($stmt_insert_details));
+}
+
+$_SESSION['thongbao'] = array('type' => 'success', 'message' => 'Sản phẩm đã được thêm thành công!');
+
     }
 
     // Quay lại trang nhập sản phẩm
@@ -205,7 +217,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['Mahang
         <?php endif; ?>
 
         <?php if (in_array('taikhoan', $_SESSION['quyen'])): ?>
-            <a href="qltaikhaon.php" class="tab-button"><i class="fa fa-user"></i> Tài khoản</a>
+            <a href="qltaikhoan.php" class="tab-button"><i class="fa fa-user"></i> Tài khoản</a>
         <?php endif; ?>
 
         <?php if (in_array('donhang', $_SESSION['quyen'])): ?>

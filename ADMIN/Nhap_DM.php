@@ -4,7 +4,7 @@ $loggedIn = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'];
 $quyen = isset($_SESSION['quyen']) ? $_SESSION['quyen'] : [];  // Lấy quyền từ session, mặc định là mảng trống nếu không có
 if (!in_array('danhmuc', $quyen)) {
     echo "Bạn không có quyền truy cập trang này.";
-    header("Location: loginADMIN.php");
+    header("Location: loginAdmin.php");
     exit;
 }
 // Kết nối cơ sở dữ liệu
@@ -21,10 +21,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $supplierName = $_POST['supplierName'];  // Nhacungcap
 
     // Tạo Maloaihang tự động
-    $sqlId = "SELECT MAX(Maloaihang) as maxId FROM loaihang";
-    $resultId = mysqli_query($con, $sqlId);
-    $rowId = mysqli_fetch_assoc($resultId);
-    $categoryId = $rowId['maxId'] ? $rowId['maxId'] + 1 : 1;  // Nếu không có danh mục nào, gán Maloaihang là 1
+    // $sqlId = "SELECT MAX(Maloaihang) as maxId FROM loaihang";
+    // $resultId = mysqli_query($con, $sqlId);
+    // $rowId = mysqli_fetch_assoc($resultId);
+    // $categoryId = $rowId['maxId'] ? $rowId['maxId'] + 1 : 1;  // Nếu không có danh mục nào, gán Maloaihang là 1
+// Tạo Maloaihang tự động dạng LH01, LH02...
+$sqlId = "SELECT MAX(Maloaihang) as maxId FROM loaihang";
+$resultId = mysqli_query($con, $sqlId);
+$rowId = mysqli_fetch_assoc($resultId);
+if ($rowId['maxId']) {
+    // Tách phần số từ mã hiện tại
+    $number = (int)substr($rowId['maxId'], 2); // Bỏ 2 ký tự 'LH' đầu
+    $number++; // Tăng mã
+    $categoryId = 'LH' . str_pad($number, 2, '0', STR_PAD_LEFT); // Định dạng lại
+} else {
+    $categoryId = 'LH01'; // Nếu chưa có dữ liệu
+}
 
     // Xử lý việc tải ảnh lên
     if (isset($_FILES['categoryImage']) && $_FILES['categoryImage']['error'] == 0) {
@@ -118,14 +130,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
             echo "Chỉ chấp nhận các file ảnh có định dạng JPG, JPEG, PNG, GIF.";
         }
     } else {
-        // Nếu không có ảnh mới, chỉ cập nhật tên và nhà cung cấp
-        $sql = "UPDATE loaihang SET Tenloaihang = '$categoryName', Nhacungcap = '$supplierName' WHERE Maloaihang = '$categoryId'";
-        if (mysqli_query($con, $sql)) {
-            $successMessage = "Cập nhật danh mục thành công!";
+      
+    // Xử lý việc tải ảnh lên
+    if (isset($_FILES['categoryImage']) && $_FILES['categoryImage']['error'] == 0) {
+        $imageName = $_FILES['categoryImage']['name'];
+        $imageTmpName = $_FILES['categoryImage']['tmp_name'];
+
+        // Thư mục để lưu trữ ảnh
+        $targetDirectory = "../img/danh_mục/";
+        if (!is_dir($targetDirectory)) {
+            if (!mkdir($targetDirectory, 0777, true)) {
+                die('Lỗi: Không thể tạo thư mục lưu trữ hình ảnh.');
+            }
+        }
+        $targetFilePath = $targetDirectory . basename($imageName);
+
+        // Kiểm tra loại file (chỉ cho phép các file ảnh jpg, png, jpeg, gif)
+        $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+        $allowedTypes = array('jpg', 'jpeg', 'png', 'gif');
+
+        if (in_array($fileType, $allowedTypes)) {
+            // Di chuyển file tải lên vào thư mục uploads
+            if (move_uploaded_file($imageTmpName, $targetFilePath)) {
+                // Thêm danh mục mới vào cơ sở dữ liệu
+                $sql = "INSERT INTO loaihang (Maloaihang, Tenloaihang, Nhacungcap, anh) 
+                        VALUES ('$categoryId', '$categoryName', '$supplierName', '$imageName')";
+                if (mysqli_query($con, $sql)) {
+                    $successMessage = "Thêm danh mục thành công!";
+                } else {
+                    echo "Lỗi: " . mysqli_error($con);
+                }
+            } else {
+                echo "Lỗi: Không thể tải file lên.";
+            }
         } else {
-            echo "Lỗi: " . mysqli_error($con);
+            echo "Chỉ chấp nhận các file ảnh có định dạng JPG, JPEG, PNG, GIF.";
         }
     }
+}
 }
 ?>
 
@@ -165,7 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
                 
                 <li><a href="logout.php"><i class="fa fa-user"></i> <?php echo $_SESSION['admin_username'];; ?></a></li>
             <?php else: ?>
-                <li><a href="loginADMIN.php" class="dangnhap">Đăng Nhập</a></li>
+                <li><a href="loginAdmin.php" class="dangnhap">Đăng Nhập</a></li>
             <?php endif; ?>
         </ul>
     </div>
@@ -187,7 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
         <?php endif; ?>
 
         <?php if (in_array('taikhoan', $_SESSION['quyen'])): ?>
-            <a href="qltaikhaon.php" class="tab-button"><i class="fa fa-user"></i> Tài khoản</a>
+            <a href="qltaikhoan.php" class="tab-button"><i class="fa fa-user"></i> Tài khoản</a>
         <?php endif; ?>
 
         <?php if (in_array('donhang', $_SESSION['quyen'])): ?>
