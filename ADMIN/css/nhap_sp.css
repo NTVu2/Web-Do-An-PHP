@@ -214,11 +214,13 @@ h2 {
    
 }
 
-.admin-header .admin-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 540px;
-}
+   .admin-header .admin-title {
+       margin-top: 0;
+       margin-bottom: 0;
+       margin-left: 0;
+       font-size: 24px;
+       font-weight: bold;
+   }
 
 .admin-header .user-actions {
     list-style: none;

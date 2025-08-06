@@ -14,7 +14,7 @@ h1 {
     text-align: center;
     margin-bottom: 30px;
     font-size: 2rem;
-    color: #333;
+    color: #f3efef;
 }
 
 form {
@@ -132,6 +132,12 @@ button:hover {
     .prev, .next {
         padding: 5px;
     }
+    
+    .admin-header .admin-title {
+        font-size: 1.6em;
+        margin-left: 0;
+        text-align: center;
+    }
 }
 header {
     background-color: #333; /* Màu nền cho header */
@@ -190,7 +196,9 @@ header {
     .admin-header .admin-title {
         margin-top: 0;
         margin-bottom: 0;
-        margin-left: 540px;
+        margin-left: 0;
+        font-size: 24px;
+        font-weight: bold;
     }
 
     .admin-header .user-actions {

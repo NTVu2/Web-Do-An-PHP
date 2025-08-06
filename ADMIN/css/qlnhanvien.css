@@ -15,7 +15,9 @@ header {
 
 .admin-header .admin-title {
     margin: 0;
-    margin-left: 540px;
+    margin-left: 0;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .admin-header .user-actions {

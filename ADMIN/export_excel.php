@@ -15,23 +15,40 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
 
 include '../db_connect.php';
 
-// Lấy tham số từ form
+// Lấy tham số từ form và validate
 $reportType = isset($_GET['report_type']) ? $_GET['report_type'] : 'customer';
 $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
 $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-t');
 $selectedYear = isset($_GET['year']) ? $_GET['year'] : date('Y');
 
+// Validate ngày tháng
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate)) {
+    $startDate = date('Y-m-01');
+    $endDate = date('Y-m-t');
+}
+
+// Validate năm
+if (!is_numeric($selectedYear) || $selectedYear < 2020 || $selectedYear > date('Y') + 1) {
+    $selectedYear = date('Y');
+}
+
 // Hàm lấy thống kê khách hàng
 function getCustomerStats($con, $startDate, $endDate) {
-    $query = "SELECT k.Tenkhach, k.SDT, COUNT(hd.SohieuHD) as TotalOrders, 
-              SUM(hd.Tongtien) as TotalSpent, AVG(hd.Tongtien) as AvgOrderValue
+    $query = "SELECT k.Tenkhach, k.Dienthoai as SDT, COUNT(hd.SohieuHD) as TotalOrders, 
+              SUM(CAST(hd.Tongtien AS DECIMAL(15,2))) as TotalSpent, 
+              AVG(CAST(hd.Tongtien AS DECIMAL(15,2))) as AvgOrderValue
               FROM khach k
               JOIN hoadon hd ON k.id = hd.id
               WHERE hd.Trangthai = 'Giao hàng thành công'
-              AND hd.NgayBH BETWEEN '$startDate' AND '$endDate'
-              GROUP BY k.id
+              AND hd.NgayBH BETWEEN ? AND ?
+              GROUP BY k.id, k.Tenkhach, k.Dienthoai
               ORDER BY TotalSpent DESC";
-    $result = $con->query($query);
+    
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("ss", $startDate, $endDate);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
     if (!$result) {
         error_log("SQL Error in getCustomerStats: " . $con->error);
         return false;
@@ -43,14 +60,19 @@ function getCustomerStats($con, $startDate, $endDate) {
 function getQuarterlyStats($con, $year) {
     $quarters = [];
     for ($q = 1; $q <= 4; $q++) {
-        $query = "SELECT SUM(hd.Tongtien) as TotalRevenue, 
+        $query = "SELECT SUM(CAST(hd.Tongtien AS DECIMAL(15,2))) as TotalRevenue, 
                   COUNT(hd.SohieuHD) as TotalOrders,
                   COUNT(DISTINCT hd.id) as UniqueCustomers
                   FROM hoadon hd
                   WHERE hd.Trangthai = 'Giao hàng thành công'
-                  AND YEAR(hd.NgayBH) = $year
-                  AND QUARTER(hd.NgayBH) = $q";
-        $result = $con->query($query);
+                  AND YEAR(hd.NgayBH) = ?
+                  AND QUARTER(hd.NgayBH) = ?";
+        
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ii", $year, $q);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
         if (!$result) {
             error_log("SQL Error in getQuarterlyStats for quarter $q: " . $con->error);
             $quarters[$q] = ['TotalRevenue' => 0, 'TotalOrders' => 0, 'UniqueCustomers' => 0];
@@ -65,14 +87,19 @@ function getQuarterlyStats($con, $year) {
 function getMonthlyStats($con, $year) {
     $months = [];
     for ($m = 1; $m <= 12; $m++) {
-        $query = "SELECT SUM(hd.Tongtien) as TotalRevenue, 
+        $query = "SELECT SUM(CAST(hd.Tongtien AS DECIMAL(15,2))) as TotalRevenue, 
                   COUNT(hd.SohieuHD) as TotalOrders,
                   COUNT(DISTINCT hd.id) as UniqueCustomers
                   FROM hoadon hd
                   WHERE hd.Trangthai = 'Giao hàng thành công'
-                  AND YEAR(hd.NgayBH) = $year
-                  AND MONTH(hd.NgayBH) = $m";
-        $result = $con->query($query);
+                  AND YEAR(hd.NgayBH) = ?
+                  AND MONTH(hd.NgayBH) = ?";
+        
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ii", $year, $m);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
         if (!$result) {
             error_log("SQL Error in getMonthlyStats for month $m: " . $con->error);
             $months[$m] = ['TotalRevenue' => 0, 'TotalOrders' => 0, 'UniqueCustomers' => 0];
@@ -88,18 +115,23 @@ function getTopProductsStats($con, $startDate, $endDate, $limit = 10) {
     $query = "SELECT 
         h.Tenhang,
         SUM(ct.Soluong) as total_sold,
-        SUM(ct.Soluong * ct.Dongia) as total_revenue,
-        COUNT(DISTINCT hd.SohieuHD) as order_count
+        SUM(ct.Thanhtien) as total_revenue,
+        COUNT(DISTINCT hd.SohieuHD) as order_count,
+        AVG(ct.Thanhtien) as avg_price_per_item
     FROM chitiethd ct
     JOIN hang h ON ct.Mahang = h.Mahang
     JOIN hoadon hd ON ct.SohieuHD = hd.SohieuHD
     WHERE hd.Trangthai = 'Giao hàng thành công'
-    AND hd.NgayBH BETWEEN '$startDate' AND '$endDate'
+    AND hd.NgayBH BETWEEN ? AND ?
     GROUP BY h.Mahang, h.Tenhang
     ORDER BY total_sold DESC
-    LIMIT $limit";
+    LIMIT ?";
     
-    $result = $con->query($query);
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("ssi", $startDate, $endDate, $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
     if (!$result) {
         error_log("SQL Error in getTopProductsStats: " . $con->error);
         return false;
@@ -109,11 +141,14 @@ function getTopProductsStats($con, $startDate, $endDate, $limit = 10) {
 }
 
 // Tính tổng doanh thu năm
-$yearlyTotalQuery = "SELECT SUM(hd.Tongtien) as TotalRevenue
+$yearlyTotalQuery = "SELECT SUM(CAST(hd.Tongtien AS DECIMAL(15,2))) as TotalRevenue
                      FROM hoadon hd
                      WHERE hd.Trangthai = 'Giao hàng thành công'
-                     AND YEAR(hd.NgayBH) = $selectedYear";
-$yearlyTotalResult = $con->query($yearlyTotalQuery);
+                     AND YEAR(hd.NgayBH) = ?";
+$yearlyTotalStmt = $con->prepare($yearlyTotalQuery);
+$yearlyTotalStmt->bind_param("i", $selectedYear);
+$yearlyTotalStmt->execute();
+$yearlyTotalResult = $yearlyTotalStmt->get_result();
 if (!$yearlyTotalResult) {
     error_log("SQL Error in yearlyTotalQuery: " . $con->error);
     $yearlyTotal = 0;
@@ -244,10 +279,10 @@ if ($reportType == 'customer') {
 } elseif ($reportType == 'top-products') {
     // Header cho thống kê sản phẩm bán chạy
     echo '<tr style="background-color: #9C27B0; color: white; font-weight: bold;">';
-    echo '<td colspan="7" style="text-align: center; font-size: 16px;">THỐNG KÊ SẢN PHẨM BÁN CHẠY</td>';
+    echo '<td colspan="8" style="text-align: center; font-size: 16px;">THỐNG KÊ SẢN PHẨM BÁN CHẠY</td>';
     echo '</tr>';
     echo '<tr style="background-color: #9C27B0; color: white; font-weight: bold;">';
-    echo '<td colspan="7" style="text-align: center;">Từ ngày: ' . date('d/m/Y', strtotime($startDate)) . ' - Đến ngày: ' . date('d/m/Y', strtotime($endDate)) . '</td>';
+    echo '<td colspan="8" style="text-align: center;">Từ ngày: ' . date('d/m/Y', strtotime($startDate)) . ' - Đến ngày: ' . date('d/m/Y', strtotime($endDate)) . '</td>';
     echo '</tr>';
     echo '<tr style="background-color: #f2f2f2; font-weight: bold;">';
     echo '<td>STT</td>';
@@ -256,6 +291,7 @@ if ($reportType == 'customer') {
     echo '<td>Tổng Doanh Thu (VNĐ)</td>';
     echo '<td>Số Đơn Hàng</td>';
     echo '<td>Trung Bình/Đơn (VNĐ)</td>';
+    echo '<td>Giá Trung Bình/Sản Phẩm (VNĐ)</td>';
     echo '<td>Xếp Hạng</td>';
     echo '</tr>';
 
@@ -266,10 +302,11 @@ if ($reportType == 'customer') {
             echo '<tr>';
             echo '<td>' . $rank . '</td>';
             echo '<td>' . $row['Tenhang'] . '</td>';
-            echo '<td>' . $row['total_sold'] . ' sản phẩm</td>';
+            echo '<td>' . number_format($row['total_sold']) . ' sản phẩm</td>';
             echo '<td>' . number_format($row['total_revenue'], 0, ',', '.') . '</td>';
             echo '<td>' . $row['order_count'] . '</td>';
             echo '<td>' . number_format($row['total_revenue'] / $row['order_count'], 0, ',', '.') . '</td>';
+            echo '<td>' . number_format($row['avg_price_per_item'], 0, ',', '.') . '</td>';
             echo '<td>' . ($rank <= 3 ? 'Top ' . $rank : $rank) . '</td>';
             echo '</tr>';
             $rank++;

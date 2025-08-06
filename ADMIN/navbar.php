@@ -73,12 +73,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <i class="fa fa-user-tie"></i> Nhân viên
             </a>
         <?php endif; ?>
-<!-- 
+
         <?php if (in_array('thongke', $_SESSION['quyen'])): ?>
             <a href="thongke.php" class="tab-button <?php echo ($current_page == 'thongke.php') ? 'active' : ''; ?>">
                 <i class="fa fa-chart-bar"></i> Thống kê
             </a>
-        <?php endif; ?> -->
+        <?php endif; ?>
     </div>
 </nav>
 

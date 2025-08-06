@@ -32,18 +32,6 @@ include '../db_connect.php'; // Kết nối database
 <?php include 'navbar.php'; ?>
 
 <div class="container-fluid">
-    <!-- Phần 1: Thống kê chi tiết -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="stats-container">
-                <h2 class="stats-title">
-                    <i class="fas fa-chart-line"></i> Thống Kê Chi Tiết
-                </h2>
-                <?php include 'thongke.php'; ?>
-            </div>
-        </div>
-    </div>
-    
     <!-- Phần 2: Thống kê tổng quan -->
     <div class="row">
         <div class="col-12">
@@ -66,7 +54,7 @@ include '../db_connect.php'; // Kết nối database
 <!-- Script cho biểu đồ thống kê -->
 <script>
 // Biểu đồ doanh thu theo tháng
-<?php if (isset($reportType) && $reportType == 'monthly'): ?>
+<?php if (isset($reportType) && $reportType == 'monthly'):                ?>
 const ctx = document.getElementById('monthlyChart');
 if (ctx) {
     const monthlyChart = new Chart(ctx.getContext('2d'), {

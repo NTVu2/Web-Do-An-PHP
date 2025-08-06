@@ -7,7 +7,7 @@ body {
 
 h1, h2 {
     text-align: center;
-    color: #333;
+    color: #faf6f6;
 }
 
 .container {
@@ -105,6 +105,12 @@ form button:hover {
         width: 100%;
         margin-bottom: 20px;
     }
+    
+    .admin-header .admin-title {
+        font-size: 1.6em;
+        margin-left: 0;
+        text-align: center;
+    }
 }
 
 header {
@@ -164,7 +170,9 @@ header {
    .admin-header .admin-title {
        margin-top: 0;
        margin-bottom: 0;
-       margin-left: 540px;
+       margin-left: 0;
+       font-size: 24px;
+       font-weight: bold;
    }
 
    .admin-header .user-actions {

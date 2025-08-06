@@ -1,5 +1,19 @@
 <?php
-// Không cần kiểm tra session và include database vì đã có trong trangchuadmin.php
+// Kiểm tra session đã được khởi tạo chưa
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Kiểm tra nếu admin đã đăng nhập
+if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
+    header("Location: loginADMIN.php");
+    exit;
+}
+
+// Kiểm tra nếu biến $con chưa được định nghĩa thì include database
+if (!isset($con)) {
+    include '../db_connect.php';
+}
 
 // Xử lý xuất Excel
 if (isset($_POST['export_excel'])) {
@@ -9,53 +23,26 @@ if (isset($_POST['export_excel'])) {
     header('Expires: 0');
 }
 
-// Lấy tham số từ form
+// Lấy tham số từ form và validate
 $reportType = isset($_GET['report_type']) ? $_GET['report_type'] : 'customer';
 $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
 $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-t');
 $selectedYear = isset($_GET['year']) ? $_GET['year'] : date('Y');
 
-// Điều kiện thời gian
-$timeCondition = "AND hd.NgayBH BETWEEN '$startDate' AND '$endDate'";
-$yearCondition = "AND YEAR(hd.NgayBH) = $selectedYear";
+// Validate ngày tháng
+if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $startDate) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $endDate)) {
+    $startDate = date('Y-m-01');
+    $endDate = date('Y-m-t');
+}
+
+// Validate năm
+if (!is_numeric($selectedYear) || $selectedYear < 2020 || $selectedYear > date('Y') + 1) {
+    $selectedYear = date('Y');
+}
 
 // Hàm lấy thống kê khách hàng - SỬA LẠI LOGIC
 function getCustomerStats($con, $startDate, $endDate, $limit = 10) {
-    // Debug: Kiểm tra cấu trúc bảng trước
-    $checkTableQuery = "DESCRIBE khach";
-    $tableResult = $con->query($checkTableQuery);
-    error_log("=== KHÁCH TABLE STRUCTURE ===");
-    if ($tableResult) {
-        while ($row = $tableResult->fetch_assoc()) {
-            error_log("Column: " . $row['Field'] . " - Type: " . $row['Type']);
-        }
-    }
-    
-    // Debug: Kiểm tra cấu trúc bảng hoadon
-    $checkHoadonQuery = "DESCRIBE hoadon";
-    $hoadonResult = $con->query($checkHoadonQuery);
-    error_log("=== HOADON TABLE STRUCTURE ===");
-    if ($hoadonResult) {
-        while ($row = $hoadonResult->fetch_assoc()) {
-            error_log("Column: " . $row['Field'] . " - Type: " . $row['Type']);
-        }
-    }
-    
-    // Debug: Kiểm tra dữ liệu mẫu
-    $sampleDataQuery = "SELECT k.id, k.Tenkhach, k.Dienthoai, hd.SohieuHD, hd.NgayBH, hd.Tongtien, hd.Trangthai 
-                       FROM khach k 
-                       LEFT JOIN hoadon hd ON k.id = hd.id 
-                       WHERE hd.Trangthai = 'Giao hàng thành công'
-                       ORDER BY hd.NgayBH DESC LIMIT 5";
-    $sampleResult = $con->query($sampleDataQuery);
-    error_log("=== SAMPLE DATA ===");
-    if ($sampleResult) {
-        while ($row = $sampleResult->fetch_assoc()) {
-            error_log("Customer: " . $row['Tenkhach'] . " | Phone: " . $row['Dienthoai'] . " | Order: " . $row['SohieuHD'] . " | Date: " . $row['NgayBH'] . " | Amount: " . $row['Tongtien'] . " | Status: " . $row['Trangthai']);
-        }
-    }
-    
-    // Query chính - SỬA LẠI để sử dụng đúng tên cột
+    // Sử dụng prepared statement để tránh SQL injection
     $query = "SELECT 
                 k.Tenkhach, 
                 k.Dienthoai as SDT, 
@@ -65,23 +52,20 @@ function getCustomerStats($con, $startDate, $endDate, $limit = 10) {
               FROM khach k
               INNER JOIN hoadon hd ON k.id = hd.id
               WHERE hd.Trangthai = 'Giao hàng thành công'
-              AND hd.NgayBH BETWEEN '$startDate' AND '$endDate'
+              AND hd.NgayBH BETWEEN ? AND ?
               GROUP BY k.id, k.Tenkhach, k.Dienthoai
               ORDER BY TotalSpent DESC
-              LIMIT $limit";
+              LIMIT ?";
     
-    // Debug: Log query để kiểm tra
-    error_log("Customer Stats Query: " . $query);
-    error_log("Start Date: " . $startDate . ", End Date: " . $endDate);
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("ssi", $startDate, $endDate, $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
     
-    $result = $con->query($query);
     if (!$result) {
         error_log("SQL Error in getCustomerStats: " . $con->error);
         return false;
     }
-    
-    // Debug: Log số lượng kết quả
-    error_log("Customer Stats Result Rows: " . $result->num_rows);
     
     return $result;
 }
@@ -93,11 +77,16 @@ function getQuarterlyStats($con, $year) {
         $query = "SELECT SUM(CAST(hd.Tongtien AS DECIMAL(15,2))) as TotalRevenue, 
                   COUNT(hd.SohieuHD) as TotalOrders,
                   COUNT(DISTINCT hd.id) as UniqueCustomers
-                     FROM hoadon hd
-                     WHERE hd.Trangthai = 'Giao hàng thành công'
-                  AND YEAR(hd.NgayBH) = $year
-                  AND QUARTER(hd.NgayBH) = $q";
-        $result = $con->query($query);
+                  FROM hoadon hd
+                  WHERE hd.Trangthai = 'Giao hàng thành công'
+                  AND YEAR(hd.NgayBH) = ?
+                  AND QUARTER(hd.NgayBH) = ?";
+        
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ii", $year, $q);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
         if (!$result) {
             error_log("SQL Error in getQuarterlyStats for quarter $q: " . $con->error);
             $quarters[$q] = ['TotalRevenue' => 0, 'TotalOrders' => 0, 'UniqueCustomers' => 0];
@@ -117,9 +106,14 @@ function getMonthlyStats($con, $year) {
                   COUNT(DISTINCT hd.id) as UniqueCustomers
                   FROM hoadon hd
                   WHERE hd.Trangthai = 'Giao hàng thành công'
-                  AND YEAR(hd.NgayBH) = $year
-                  AND MONTH(hd.NgayBH) = $m";
-        $result = $con->query($query);
+                  AND YEAR(hd.NgayBH) = ?
+                  AND MONTH(hd.NgayBH) = ?";
+        
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ii", $year, $m);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
         if (!$result) {
             error_log("SQL Error in getMonthlyStats for month $m: " . $con->error);
             $months[$m] = ['TotalRevenue' => 0, 'TotalOrders' => 0, 'UniqueCustomers' => 0];
@@ -130,23 +124,29 @@ function getMonthlyStats($con, $year) {
     return $months;
 }
 
-// Hàm lấy thống kê sản phẩm bán chạy
+// Hàm lấy thống kê sản phẩm bán chạy - SỬA LẠI LOGIC
 function getTopProductsStats($con, $startDate, $endDate, $limit = 10) {
+    // Sử dụng prepared statement và sửa logic tính toán
     $query = "SELECT 
-        h.Tenhang,
-        SUM(ct.Soluong) as total_sold,
-        SUM(ct.Soluong * ct.Dongia) as total_revenue,
-        COUNT(DISTINCT hd.SohieuHD) as order_count
-    FROM chitiethd ct
-    JOIN hang h ON ct.Mahang = h.Mahang
-    JOIN hoadon hd ON ct.SohieuHD = hd.SohieuHD
-    WHERE hd.Trangthai = 'Giao hàng thành công'
-    AND hd.NgayBH BETWEEN '$startDate' AND '$endDate'
-    GROUP BY h.Mahang, h.Tenhang
-    ORDER BY total_sold DESC
-    LIMIT $limit";
+                h.Tenhang,
+                SUM(ct.Soluong) as total_sold,
+                SUM(ct.Thanhtien) as total_revenue,
+                COUNT(DISTINCT hd.SohieuHD) as order_count,
+                AVG(ct.Thanhtien) as avg_price_per_item
+              FROM chitiethd ct
+              JOIN hang h ON ct.Mahang = h.Mahang
+              JOIN hoadon hd ON ct.SohieuHD = hd.SohieuHD
+              WHERE hd.Trangthai = 'Giao hàng thành công'
+              AND hd.NgayBH BETWEEN ? AND ?
+              GROUP BY h.Mahang, h.Tenhang
+              ORDER BY total_sold DESC
+              LIMIT ?";
     
-    $result = $con->query($query);
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("ssi", $startDate, $endDate, $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
     if (!$result) {
         error_log("SQL Error in getTopProductsStats: " . $con->error);
         return false;
@@ -155,47 +155,7 @@ function getTopProductsStats($con, $startDate, $endDate, $limit = 10) {
     return $result;
 }
 
-// Debug: Kiểm tra dữ liệu trong khoảng thời gian - SỬA LẠI
-$debugQuery = "SELECT COUNT(*) as total_orders, 
-               COUNT(DISTINCT hd.id) as unique_customers,
-               SUM(CAST(hd.Tongtien AS DECIMAL(15,2))) as total_revenue
-               FROM hoadon hd
-               WHERE hd.Trangthai = 'Giao hàng thành công'
-               AND hd.NgayBH BETWEEN '$startDate' AND '$endDate'";
-$debugResult = $con->query($debugQuery);
-if ($debugResult) {
-    $debugData = $debugResult->fetch_assoc();
-    error_log("Debug Data for period $startDate to $endDate:");
-    error_log("Total Orders: " . $debugData['total_orders']);
-    error_log("Unique Customers: " . $debugData['unique_customers']);
-    error_log("Total Revenue: " . $debugData['total_revenue']);
-}
 
-// Debug: Kiểm tra định dạng ngày trong database
-$dateFormatQuery = "SELECT NgayBH, Trangthai, Tongtien FROM hoadon WHERE Trangthai = 'Giao hàng thành công' ORDER BY NgayBH DESC LIMIT 5";
-$dateFormatResult = $con->query($dateFormatQuery);
-if ($dateFormatResult) {
-    error_log("Sample dates from database:");
-    while ($row = $dateFormatResult->fetch_assoc()) {
-        error_log("Date: " . $row['NgayBH'] . ", Status: " . $row['Trangthai'] . ", Amount: " . $row['Tongtien']);
-    }
-}
-
-// Debug: Kiểm tra dữ liệu khách hàng có đơn hàng thành công
-$customerCheckQuery = "SELECT DISTINCT k.id, k.Tenkhach, k.Dienthoai, COUNT(hd.SohieuHD) as order_count
-                       FROM khach k
-                       INNER JOIN hoadon hd ON k.id = hd.id
-                       WHERE hd.Trangthai = 'Giao hàng thành công'
-                       AND hd.NgayBH BETWEEN '$startDate' AND '$endDate'
-                       GROUP BY k.id, k.Tenkhach, k.Dienthoai";
-$customerCheckResult = $con->query($customerCheckQuery);
-error_log("=== CUSTOMERS WITH SUCCESSFUL ORDERS ===");
-if ($customerCheckResult) {
-    error_log("Found " . $customerCheckResult->num_rows . " customers with successful orders");
-    while ($row = $customerCheckResult->fetch_assoc()) {
-        error_log("Customer ID: " . $row['id'] . " | Name: " . $row['Tenkhach'] . " | Phone: " . $row['Dienthoai'] . " | Orders: " . $row['order_count']);
-    }
-}
 
 // Lấy dữ liệu thống kê
 $customerStats = getCustomerStats($con, $startDate, $endDate);
@@ -207,8 +167,12 @@ $topProductsStats = getTopProductsStats($con, $startDate, $endDate);
 $yearlyTotalQuery = "SELECT SUM(CAST(hd.Tongtien AS DECIMAL(15,2))) as TotalRevenue
                      FROM hoadon hd
                      WHERE hd.Trangthai = 'Giao hàng thành công'
-                     AND YEAR(hd.NgayBH) = $selectedYear";
-$yearlyTotalResult = $con->query($yearlyTotalQuery);
+                     AND YEAR(hd.NgayBH) = ?";
+$yearlyTotalStmt = $con->prepare($yearlyTotalQuery);
+$yearlyTotalStmt->bind_param("i", $selectedYear);
+$yearlyTotalStmt->execute();
+$yearlyTotalResult = $yearlyTotalStmt->get_result();
+
 if (!$yearlyTotalResult) {
     error_log("SQL Error in yearlyTotalQuery: " . $con->error);
     $yearlyTotal = 0;
@@ -218,7 +182,29 @@ if (!$yearlyTotalResult) {
 }
 ?>
 
-<link rel="stylesheet" href="css/thongke.css">
+
+
+
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê - ADMIN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/trangchu.css">
+    <link rel="stylesheet" href="css/dashboard_stats.css">
+    <link rel="stylesheet" href="css/thongke.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<?php include 'navbar.php'; ?>
+
+<div class="container-fluid">
 
 
 
@@ -267,15 +253,12 @@ if (!$yearlyTotalResult) {
 
     <!-- Nút xuất Excel -->
     <div class="text-end mb-3">
-        <a href="export_excel.php?report_type=<?php echo $reportType; ?>&start_date=<?php echo $startDate; ?>&end_date=<?php echo $endDate; ?>&year=<?php echo $selectedYear; ?>" class="btn btn-export">
+        <a href="export_excel.php?report_type=<?php echo urlencode($reportType); ?>&start_date=<?php echo urlencode($startDate); ?>&end_date=<?php echo urlencode($endDate); ?>&year=<?php echo urlencode($selectedYear); ?>" class="btn btn-export">
             <i class="fas fa-file-excel"></i> Xuất Excel
         </a>
     </div>
 
     <?php if ($reportType == 'customer'): ?>
-        <!-- Debug Info -->
-        
-        
         <!-- Thống kê khách hàng -->
         <div class="stats-container">
             <h3><i class="fas fa-users"></i> Thống Kê Khách Hàng (<?php echo date('d/m/Y', strtotime($startDate)); ?> - <?php echo date('d/m/Y', strtotime($endDate)); ?>)</h3>
@@ -453,6 +436,7 @@ if (!$yearlyTotalResult) {
                             <th>Tổng Doanh Thu (VNĐ)</th>
                             <th>Số Đơn Hàng</th>
                             <th>Trung Bình/Đơn (VNĐ)</th>
+                            <th>Giá Trung Bình/Sản Phẩm (VNĐ)</th>
                             <th>Xếp Hạng</th>
                         </tr>
                     </thead>
@@ -465,10 +449,11 @@ if (!$yearlyTotalResult) {
                             <tr>
                                 <td><?php echo $rank; ?></td>
                                 <td><?php echo htmlspecialchars($row['Tenhang']); ?></td>
-                                <td><?php echo $row['total_sold']; ?> sản phẩm</td>
+                                <td><?php echo number_format($row['total_sold']); ?> sản phẩm</td>
                                 <td><?php echo number_format($row['total_revenue'], 0, ',', '.'); ?></td>
                                 <td><?php echo $row['order_count']; ?></td>
                                 <td><?php echo number_format($row['total_revenue'] / $row['order_count'], 0, ',', '.'); ?></td>
+                                <td><?php echo number_format($row['avg_price_per_item'], 0, ',', '.'); ?></td>
                                 <td>
                                     <?php if ($rank <= 3): ?>
                                         <span class="badge bg-warning">Top <?php echo $rank; ?></span>
@@ -494,6 +479,56 @@ if (!$yearlyTotalResult) {
     <?php endif; ?>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function toggleMenu() {
+        var tabs = document.querySelector('.tabs');
+        tabs.classList.toggle('visible');
+    }
+</script>
 
+<!-- Script cho biểu đồ thống kê -->
+<script>
+// Biểu đồ doanh thu theo tháng
+<?php if (isset($reportType) && $reportType == 'monthly'): ?>
+const ctx = document.getElementById('monthlyChart');
+if (ctx) {
+    const monthlyChart = new Chart(ctx.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
+            datasets: [{
+                label: 'Doanh Thu (VNĐ)',
+                data: [
+                    <?php 
+                    if (isset($monthlyStats)) {
+                        foreach ($monthlyStats as $data) {
+                            echo $data['TotalRevenue'] . ',';
+                        }
+                    }
+                    ?>
+                ],
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Doanh Thu (VNĐ)'
+                    }
+                }
+            }
+        }
+    });
+}
+<?php endif; ?>
+</script>
 
-
+</body>
+</html>

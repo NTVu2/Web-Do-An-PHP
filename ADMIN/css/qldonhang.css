@@ -90,7 +90,7 @@ form {
     margin: 0 auto;
     padding: 10px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #a22424;
     background-color: #f0f8ff;
     color: #333;
     text-align: center;
@@ -105,18 +105,18 @@ text-align: center;
 .tabs {
 display: flex;
 justify-content: center;
-background-color: #444; /* Màu nền cho menu */
+background-color: #0b0b0b; /* Màu nền cho menu */
 }
 
 .tab-button {
 text-decoration: none;
-background-color: transparent; /* Nền trong suốt cho các nút tab */
+
 border: none;
 color: #fff; /* Màu chữ cho nút tab */
 padding: 15px 20px;
 cursor: pointer; /* Con trỏ khi di chuột vào nút */
 font-size: 16px;
-transition: background-color 0.3s; /* Hiệu ứng chuyển màu nền */
+
 }
 
 .tab-button:hover {
@@ -149,11 +149,13 @@ padding: 10px;
 
 }
 
-.admin-header .admin-title {
-margin-top: 0;
-margin-bottom: 0;
-margin-left: 540px;
-}
+   .admin-header .admin-title {
+       margin-top: 0;
+       margin-bottom: 0;
+       margin-left: 0;
+       font-size: 24px;
+       font-weight: bold;
+   }
 
 .admin-header .user-actions {
 list-style: none;
