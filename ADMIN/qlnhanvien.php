@@ -1,7 +1,9 @@
 <?php
 // qlnhanvien.php
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 $loggedIn = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'];
 
 // Kiểm tra quyền truy cập trang quản lý nhân viên
@@ -150,45 +152,7 @@ $result = $con->query($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header class="admin-header">
-        <div class="header-container">
-            <h1 class="admin-title" style="color: #3399ff;">Bảng Điều Khiển Admin</h1>
-            <ul class="user-actions">
-                <?php if ($loggedIn): ?>
-                    <li><a href="logout.php"><i class="fa fa-user"></i> <?php echo $_SESSION['admin_username']; ?></a></li>
-                <?php else: ?>
-                    <li><a href="loginADMIN.php" class="dangnhap">Đăng Nhập</a></li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    </header>
-
-    <nav>
-        <div class="tabs">
-            <a href="trangchuadmin.php" class="tab-button"><i class="fa fa-home"></i> Trang chủ</a>   
-            <?php if (in_array('sanpham', $_SESSION['quyen'])): ?>
-                <a href="Nhap_SP.php" class="tab-button"><i class="fa fa-product-hunt"></i> Sản phẩm</a>
-            <?php endif; ?>
-            <?php if (in_array('danhmuc', $_SESSION['quyen'])): ?>
-                <a href="Nhap_DM.php" class="tab-button"><i class="fa fa-list"></i> Danh mục</a>
-            <?php endif; ?>
-            <?php if (in_array('banner', $_SESSION['quyen'])): ?>
-                <a href="Nhap_Banner.php" class="tab-button"><i class="fa fa-image"></i> Banner</a>
-            <?php endif; ?>
-            <?php if (in_array('taikhoan', $_SESSION['quyen'])): ?>
-                <a href="qltaikhaon.php" class="tab-button"><i class="fa fa-user"></i> Tài khoản</a>
-            <?php endif; ?>
-            <?php if (in_array('donhang', $_SESSION['quyen'])): ?>
-                <a href="quanlydonhang.php" class="tab-button"><i class="fa fa-credit-card"></i> Đơn hàng</a>
-            <?php endif; ?>
-            <?php if (in_array('hoadon', $_SESSION['quyen'])): ?>
-                <a href="xemhoadon.php" class="tab-button"><i class="fa fa-clipboard-list"></i> Hóa đơn</a>
-            <?php endif; ?>
-            <?php if (in_array('nhanvien', $_SESSION['quyen'])): ?>
-                <a href="qlnhanvien.php" class="tab-button" style="background-color: #858382;"><i class="fa fa-user-tie"></i> Nhân viên</a>
-            <?php endif; ?>
-        </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <div class="container mt-5">
         <h1 style="text-align: center;">Quản lý nhân viên</h1>
@@ -231,7 +195,7 @@ if (isset($_SESSION['success'])) {
           <div class="form1">
                         <label></h2>Quyền:</label><br>
                         <?php
-                        $permissions = ['sanpham', 'danhmuc', 'banner', 'donhang', 'hoadon', 'taikhoan', 'nhanvien'];
+                        $permissions = ['sanpham', 'danhmuc', 'banner', 'donhang', 'hoadon', 'taikhoan', 'nhanvien', 'thongke'];
                         $userPermissions = $editMode ? explode(',', $editData['quyen']) : [];
                         foreach ($permissions as $permission) {
                             $checked = in_array($permission, $userPermissions) ? 'checked' : '';
