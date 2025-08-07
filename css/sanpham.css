@@ -149,16 +149,27 @@ color: #ffffff; /* Màu chữ trắng */
 }
 .discount{
     background-color: #ff4500;
-    border-radius: 2px;
+    border-radius: 6px;
     color: #fff;
-    font-size: .75rem;
-    font-weight: 600;
-    line-height: 1;
-    margin-left: 15px;
-    padding: 2px 4px;
+    font-size: .8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-left: 10px;
+    padding: 4px 8px;
     text-transform: uppercase;
     white-space: nowrap;
-    width: 70px;
+    display: inline-block;
+    min-width: auto;
+    width: auto;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(255, 69, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.discount:hover {
+    background-color: #e63900;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 69, 0, 0.4);
 }
 
 

@@ -70,6 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $oldStatus = $resultOldStatus->fetch_assoc()['Trangthai'];
     $stmtOldStatus->close();
 
+    // Kiểm tra điều kiện hủy đơn hàng: chỉ được hủy khi đơn hàng đang xử lý
+    if ($Trangthai == "Đã hủy" && $oldStatus != "Đang xử lý") {
+        $_SESSION['message'] = "Lỗi: Chỉ có thể hủy đơn hàng đang xử lý!";
+        header("Location: quanlydonhang.php");
+        exit();
+    }
+
     // Cập nhật trạng thái đơn hàng
     $sql = "UPDATE hoadon SET Trangthai = ? WHERE SohieuHD = ?";
     $stmt = $con->prepare($sql);
@@ -404,6 +411,130 @@ $result = $con->query($sql);
         .tab-stats .stat-item .revenue {
             color: #28a745;
         }
+
+        /* Cải thiện cột hành động */
+        .action-column {
+            min-width: 200px;
+            padding: 10px;
+        }
+
+        .action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .action-form {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .action-form select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .action-form button {
+            width: 100%;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-form button:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .action-form button:not(:disabled) {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .action-form button:not(:disabled):hover {
+            background-color: #0056b3;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545 !important;
+            color: white !important;
+            border: none !important;
+            padding: 6px 12px !important;
+            border-radius: 4px !important;
+            cursor: pointer !important;
+            font-size: 12px !important;
+            width: 100% !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-cancel:hover {
+            background-color: #c82333 !important;
+        }
+
+        .btn-print {
+            background-color: #28a745 !important;
+            color: white !important;
+            text-decoration: none !important;
+            padding: 6px 12px !important;
+            border-radius: 4px !important;
+            font-size: 12px !important;
+            display: inline-block !important;
+            text-align: center !important;
+            width: 100% !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-print:hover {
+            background-color: #218838 !important;
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        .btn-delete {
+            background-color: #f15050 !important;
+            color: white !important;
+            border: none !important;
+            padding: 6px 12px !important;
+            border-radius: 4px !important;
+            cursor: pointer !important;
+            font-size: 12px !important;
+            width: 100% !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-delete:hover {
+            background-color: #d63384 !important;
+        }
+
+        .disabled-action {
+            color: #999 !important;
+            cursor: not-allowed !important;
+            text-decoration: none !important;
+            pointer-events: none;
+            background-color: #f5f5f5 !important;
+            padding: 6px 12px !important;
+            border-radius: 4px !important;
+            font-size: 12px !important;
+            display: inline-block !important;
+            text-align: center !important;
+            width: 100% !important;
+        }
     </style>
 </head>
 <?php include 'navbar.php'; ?>
@@ -560,35 +691,53 @@ $result = $con->query($sql);
                             ?>
                             <span class="status-badge <?php echo $statusClass; ?>"><?php echo $row['Trangthai']; ?></span>
                         </td>
-                        <td>
-                            <form action="quanlydonhang.php" method="POST">
-                                <input type="hidden" name="SohieuHD" value="<?php echo $row['SohieuHD']; ?>">
-                                <select name="Trangthai">
-                                    <option value="Đang xử lý" <?php if ($row['Trangthai'] == 'Đang xử lý') echo 'selected'; ?>>Đang xử lý</option>
-                                    <option value="1-2 ngày" <?php if (strpos($row['Trangthai'], '1-2 ngày') !== false) echo 'selected'; ?>>1-2 ngày</option>
-                                    <option value="3-4 ngày" <?php if (strpos($row['Trangthai'], '3-4 ngày') !== false) echo 'selected'; ?>>3-4 ngày</option>
-                                    <option value="5-6 ngày" <?php if (strpos($row['Trangthai'], '5-6 ngày') !== false) echo 'selected'; ?>>5-6 ngày</option>
-                                    <option value="7-8 ngày" <?php if (strpos($row['Trangthai'], '7-8 ngày') !== false) echo 'selected'; ?>>7-8 ngày</option>
-                                    <option value="Giao hàng thành công" <?php if ($row['Trangthai'] == 'Giao hàng thành công') echo 'selected'; ?>>Giao hàng thành công</option>
-                                    <option value="Đã hủy" <?php if ($row['Trangthai'] == 'Đã hủy') echo 'selected'; ?>>Đã hủy</option>
-                                </select>
-                                <button type="submit" <?php if ($row['Trangthai'] == 'Giao hàng thành công' || $row['Trangthai'] == 'Đã hủy') echo 'disabled'; ?>>Cập nhật</button>
-                            </form>
-                            
-                            <?php if ($row['Trangthai'] != 'Đã hủy'): ?>
-                                <button onclick="cancelOrder('<?php echo $row['SohieuHD']; ?>')" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 5px;">Hủy đơn hàng</button>
-                            <?php endif; ?>
-                            
-                            <?php if ($row['Trangthai'] == 'Giao hàng thành công'): ?>
-                                <a class="link-action" href="indonhang.php?SohieuHD=<?php echo $row['SohieuHD']; ?>">In hóa đơn</a>
-                            <?php else: ?>
-                                <span class="disabled-action">In hóa đơn</span>
-                            <?php endif; ?>
-                            
-                            <form action="quanlydonhang.php" method="POST" style="display:inline;">
-                                <input type="hidden" name="SohieuHD_xoa" value="<?php echo $row['SohieuHD']; ?>">
-                                <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa hóa đơn này?');" style="background-color: #f15050; color: white; height: 28px;">Xóa </button>
-                            </form>
+                        <td class="action-column">
+                            <div class="action-group">
+                                <!-- Form cập nhật trạng thái -->
+                                <div class="action-form">
+                                    <form action="quanlydonhang.php" method="POST">
+                                        <input type="hidden" name="SohieuHD" value="<?php echo $row['SohieuHD']; ?>">
+                                        <select name="Trangthai">
+                                            <option value="Đang xử lý" <?php if ($row['Trangthai'] == 'Đang xử lý') echo 'selected'; ?>>Đang xử lý</option>
+                                            <option value="1-2 ngày" <?php if (strpos($row['Trangthai'], '1-2 ngày') !== false) echo 'selected'; ?>>1-2 ngày</option>
+                                            <option value="3-4 ngày" <?php if (strpos($row['Trangthai'], '3-4 ngày') !== false) echo 'selected'; ?>>3-4 ngày</option>
+                                            <option value="5-6 ngày" <?php if (strpos($row['Trangthai'], '5-6 ngày') !== false) echo 'selected'; ?>>5-6 ngày</option>
+                                            <option value="7-8 ngày" <?php if (strpos($row['Trangthai'], '7-8 ngày') !== false) echo 'selected'; ?>>7-8 ngày</option>
+                                            <option value="Giao hàng thành công" <?php if ($row['Trangthai'] == 'Giao hàng thành công') echo 'selected'; ?>>Giao hàng thành công</option>
+                                            <option value="Đã hủy" <?php if ($row['Trangthai'] == 'Đã hủy') echo 'selected'; ?>>Đã hủy</option>
+                                        </select>
+                                        <button type="submit" <?php if ($row['Trangthai'] == 'Giao hàng thành công' || $row['Trangthai'] == 'Đã hủy') echo 'disabled'; ?>>
+                                            <i class="fa fa-save"></i> Cập nhật
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Các nút hành động khác -->
+                                <div class="action-buttons">
+                                    <?php if ($row['Trangthai'] == 'Đang xử lý'): ?>
+                                        <button onclick="cancelOrder('<?php echo $row['SohieuHD']; ?>')" class="btn-cancel">
+                                            <i class="fa fa-times"></i> Hủy đơn hàng
+                                        </button>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($row['Trangthai'] == 'Giao hàng thành công'): ?>
+                                        <a class="btn-print" href="indonhang.php?SohieuHD=<?php echo $row['SohieuHD']; ?>">
+                                            <i class="fa fa-print"></i> In hóa đơn
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="disabled-action">
+                                            <i class="fa fa-print"></i> In hóa đơn
+                                        </span>
+                                    <?php endif; ?>
+                                    
+                                    <form action="quanlydonhang.php" method="POST" style="margin: 0;">
+                                        <input type="hidden" name="SohieuHD_xoa" value="<?php echo $row['SohieuHD']; ?>">
+                                        <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa hóa đơn này?');" class="btn-delete">
+                                            <i class="fa fa-trash"></i> Xóa
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <?php } ?>
@@ -610,7 +759,7 @@ $result = $con->query($sql);
             
             // Hàm hủy đơn hàng
             function cancelOrder(sohieuHD) {
-                if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này? Số lượng tồn kho sẽ được cập nhật lại.')) {
+                if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?\n\nLưu ý: Chỉ có thể hủy đơn hàng đang xử lý. Số lượng tồn kho sẽ được cập nhật lại sau khi hủy.')) {
                     // Tạo form ẩn để gửi request
                     var form = document.createElement('form');
                     form.method = 'POST';

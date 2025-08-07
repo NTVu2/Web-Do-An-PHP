@@ -1,0 +1,294 @@
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
+
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-white group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f0f4] px-10 py-3">
+          <div class="flex items-center gap-4 text-[#111118]">
+            <div class="size-4">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </div>
+            <h2 class="text-[#111118] text-lg font-bold leading-tight tracking-[-0.015em]">Vũ Tuấn Shop</h2>
+          </div>
+          <div class="flex flex-1 justify-end gap-8">
+            <label class="flex flex-col min-w-40 !h-10 max-w-64">
+              <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+                <div
+                  class="text-[#636488] flex border-none bg-[#f0f0f4] items-center justify-center pl-4 rounded-l-lg border-r-0"
+                  data-icon="MagnifyingGlass"
+                  data-size="24px"
+                  data-weight="regular"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                    <path
+                      d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+                    ></path>
+                  </svg>
+                </div>
+                <input
+                  placeholder="Search"
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111118] focus:outline-0 focus:ring-0 border-none bg-[#f0f0f4] focus:border-none h-full placeholder:text-[#636488] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                  value=""
+                />
+              </div>
+            </label>
+            <button
+              class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#f0f0f4] text-[#111118] gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5"
+            >
+              <div class="text-[#111118]" data-icon="ShoppingCart" data-size="20px" data-weight="regular">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A16,16,0,0,0,34.05,16H16a8,8,0,0,0,0,16h18L59.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,152,204a28,28,0,1,0,28-28H83.17a8,8,0,0,1-7.87-6.57L72.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,222.14,58.87ZM96,204a12,12,0,1,1-12-12A12,12,0,0,1,96,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,192,204Zm4-74.57A8,8,0,0,1,188.1,136H69.22L57.59,72H206.41Z"
+                  ></path>
+                </svg>
+              </div>
+            </button>
+            <div
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDB-i4aqMyk6Efi-sCHGH3gmK0xxsE2e7clNuT_hOTlM7ii8GoJedvyawPOeYuRpLAHgemJRuUjPO1PASxXNxEib59iH7VuWDrlJcRvbg4CUz134xm2TcnPJwa0cIE5B82EMa3J1RAAWk4I70WjCaRGAF0xpWMkrDHGTfV8kMKB2hKel62pO3hMSC1DLwuvzRD0ZgQBXiqvOw3GmJTuFQAgLLNuNUPo7Cj-cSJeE1wDNDAjxEVcTgK5TReyxGpS3YrGFi1dmsDe1xk");'
+            ></div>
+          </div>
+        </header>
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="@container">
+              <div class="@[480px]:p-4">
+                <div
+                  class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-start justify-end px-4 pb-10 @[480px]:px-10"
+                  style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDaydlJ76HbARudy3GHZqDYE_qmtpmbtCKDb9FObNZ8kwOIYWCX6IpH0NMIFmXHDCXkCetXpfHD1cD7zbmYbEa5Z1Qw25K7bFryPRt5GsaeRYvPh_ZgojTvHHBtLUWfeidhOejQHjvFEtLF8j2EIxQkJrcFL8m2oesq-A4aBlbsOYwp0N0zWdHvy4QQzisJGrEqTuvf6PJZ6khmbmY-7sjoTeRJPRJ5hgQJtFCHD404o3wqc-YV3p0yt7tDr18MmF-Rn-SznZsV15M");'
+                >
+                  <div class="flex flex-col gap-2 text-left">
+                    <h1
+                      class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]"
+                    >
+                      Tech for the Next Generation
+                    </h1>
+                    <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal">
+                      Explore the latest gadgets and gear designed for the digital age. From smartphones to smart homes, we've got you covered.
+                    </h2>
+                  </div>
+                  <button
+                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#686dee] text-white text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]"
+                  >
+                    <span class="truncate">Shop Now</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+              <div class="flex items-stretch p-4 gap-3">
+                <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBAS5sjb9emACxiGimoaQbGCvXiXwZhzYkhu5dk4PRTo5xRi-j3IBEY-GXSaJK4UQP6G-TFt5vS3sgik3sMZnQEUlqpZ6EG04Ycy9qmlJhXPm-vZi1EdlaLyBUUnZ-2e71wDIU5XEKXl4hf3jczb3EFK1RXLj3DbHz9e1OjYxyM6kge_B3KBHeiXC4ERx9nl-W-xNCnH7bl88jsdmOSZk6bNnZJR_2XFvoTKkz3fvKouHC6g7U4NIKf_rfcdTNoIxn7BBILI60OpAc");'
+                  ></div>
+                  <div>
+                    <p class="text-[#111118] text-base font-medium leading-normal">Summer Tech Sale</p>
+                    <p class="text-[#636488] text-sm font-normal leading-normal">Get ready for summer with our biggest tech sale of the year!</p>
+                  </div>
+                </div>
+                <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAdw8lu08rePq9pQzXVBujDlqzdquiln8kRbjh0-XtWUjEyS7IofdNk20SYJaPvheCFCz-kPsSluXwOqJkn7xfIkzeQN6gTxQOhgySX0sosGo4ap5XlQxz0doWbaS48teDQukMZm_CO2jv5aQ-jwZjzXxo-pNWJ1LUg_N3za2o6I4YMO4e5zHPjPKJx_zAwKSKCYyjIBWR0RGJZfBlBY1ueQEhs5c59lp1-iX-gRTD2KZJVWKVicdLjdeZu2G8ACyApnkhA9APfp44");'
+                  ></div>
+                  <div>
+                    <p class="text-[#111118] text-base font-medium leading-normal">New Arrivals</p>
+                    <p class="text-[#636488] text-sm font-normal leading-normal">Check out the latest gadgets and gear just in!</p>
+                  </div>
+                </div>
+                <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg flex flex-col"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMVgFxJMBs0RXBSyao-ezXQzTEiugKmrbJBgHcthB4et-ylnqoLg0BBVfulRi97IGv2QUyiMnNyM2bd3mQmN2GHIF3y_Eq0-AFqO6W6jaRaudR6n226IfjDuhFKgiyx5_0fc5wupgeknp3cYZmC9rPcMkpMwCj7Ym1VQ9ppJL0b3eerF38t428SPyl862ZVGzeg-AM6nzQ31tR1ajDcW3RIsmLyQd72yZqvFBapSeVk4k2u7W7OE7lMNnSf0LozBGK8QwDgez23WQ");'
+                  ></div>
+                  <div>
+                    <p class="text-[#111118] text-base font-medium leading-normal">Student Discounts</p>
+                    <p class="text-[#636488] text-sm font-normal leading-normal">Exclusive discounts for students with valid ID.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-full" style="height: 24px;"></div>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCN1ArLVU69FkdFNb13PoMrSvGqUqr7-Q0oqPffakga41cfyG6xSvcw6fhP3yfsTEaq-gduaKmPxplgA1PwVb5G7DUsIm1g5eYD0zyr3RcnGlwx_i1d-ke4vS_OyBPVjblAGhVuYOoqAVPPKdod_Q4_BWhrumnQmqSjHCshTs4h0uiwQKTrfiZ1daHVrVwcElaHwahXsxda_5DOGTKBdszvVsnfghmpvPp2zmUOua03UuVeEeUiuE1UgZPgNBNcVbSc8r6J1yoHcDo");'
+                ></div>
+              </div>
+              <div class="flex flex-col gap-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBNlHlibTnbKRbRufq0Ub4oa1FCYdw1gUWdTcVCh17y1X4tWuw1wLMHTAB-Y68wiPYLADlgY7NraXOe8mtiSN2zyM9dB5BAYLE9ewJ5tOStY2Ng6tKQPtEHHCxOdk9WU3le9IcdKIumq6PdCxevfCJdA8fppLf8i-OUPE-FZOy4XKmEiVprRcFaw4m-GaWfRYFiNclfcmCxAgxgAMMnF8Ccj62cgTmfSZThsSAIU2XpisMtIWmypKOgfruWIh1WlDXCvfkggSNS_Rs");'
+                ></div>
+              </div>
+            </div>
+            <h2 class="text-[#111118] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Product Categories</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAz3GIhl0Bs4GVV1mchhqy6C7Ms6uZ3b3LzQZ0ASL8KFoWPCY1n3M02-E27H_DuGndb1IzHsVyeEAK2c1MXxQZgtcpTieM-rHVk-YxFqt352M7sBbwVE2oFH7SeZgFUSImFk5PvP_5AEbGjrDfd3kyJJ49AQKb8a4AFDGS6fx6aoeGLp79U9dRyPQck4hnGQV8niShscbsl06ROIq7v89dtpIWm-UY8mcA93J0QImvF-goOEapGjSZ7d6pwWqzcqMpql8P-V3j5u9s");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Smartphones</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC33qKWFKScCDAQHAuif9pQIaFfKK-hF4MN1NyiBsJdko2p86jsF3ESnFASNobgCbKMUJ64Yj7U2BZ9HmiUsfJ2dJNpsWw2A6msglXr4nY5u6jcpHv-5Xbkvo3VXOLgRTP6C_Slna9PwRWFmTmvxak7gu8LwAj_QWTiXmSD-nsZHg7x3k4nECoVHzvckz1DMdXOqTwieK0h_K43YJ1cCOYDFNLfrgQHM6LsaV7FgzcETVgLlLVcCzWNcyQCbMYXKyZ5jtegziPDe5Q");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Laptops</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUWQnpMqLUuOklyean9vmacyZTpRmCooXFFtzGpgqiSRtG0yk9g3guJewEUJy3tLuvhRUZ8C1CJqunTpY_90apyHKN0lMIDs2mf0uvMWwEKvpxzbszYCbLTDTfGg5ClNx9RMDl5wPAAqkyIeZW0HShLjWmsgwOT50k9BYAH1x2yxjb0l724_n1TJRjXY5jt5At18ZDilHC6VkX-6fjrHUMJ1vKSuivL57-OH6iRJdDZ-1heaBb-2XuEm_hagO-LEDjVaq_GwYJuHs");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Tablets</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAWjSfTJcv0tjhkhuCkqx6dF-yC4UeVHqZLOlTyknge8d7Gy5Dh068E4tCnkS5JzKp9Ntp6y1OqBTaUHD83XuJ9bkeVxwn6AnboewH2zcrGef7QSXDO9jSJngIL4Crhefzrtw9Z6pnXJi4RIXHsIUdw9qzojQuNMsgbymGMO-pbeWXfMcBUo1RVtaWEa0ZvlPLlmkrql3U_L5yywGIt7NVYZRrwqJ-LNCY_TkqYHlhtLGl7MxuSzSsqUGCTGZH2h4axEXjDCgPIP0I");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Audio</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMGIdCnMQ3TeKm4xu3_ttNqmuf_fNdWHtIr65W28DDFkGicxQ4Tk8a0i6uB-Wze7ZTBRSu-0J8HVm3G8kE1X1UcS8a_MKiYY-CwpqPY1LpZS6VIPaI-rcXbkcSf2rKVryxojufYNLbB7na_InxfxNRIJsy_oPG3_DnyFv_kH8I2ga3nGeqAk-ziQ4XzDz0AQmG5SDStIij5DVGYburMbYt0_eYk909vN4Z035Op1_zu5kr-bHeZpeDt8jhIzFcwKIkElp7dwiNwmY");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Wearables</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDkf7plwLyFczLHgOCdSFGbr2KtGBdqIo5mG83Qa0HCuhJK-XR0VPmrG3aBdfssr5Q1KNlMVKE3OqX-2ZUpS-HI_tKIkoBDioRuN085STNACy0TDGL3Y7_ye7BWsUtRHM0wIa-a4ClyJY7HnqhSmrFTOB0IONV-UgeibSrwhlE2uqVqxrle0bxF-_ivhMjlgEdBh9k-OFc5t6XNLEAI6svAgg3aoYud9SoeNT7-pN-6Rg_NECuqxYWuUURezb-qGnf4sUlHQf7cPA8");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Accessories</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDEgN9YCCVygLgO_nVdu3R07hiJ28xXiZk-pGcz6ngbwwnS6ZmgSfl6SS9ZpxIy36_yfn8TZnHw8K9mi84VTz9Xh5g5RtSRJSZ19Aozm4tAl9P9q7PGixXkYXw-tDLybv0TMF8W3To27VVGfV4Q-uKRe5qnZhPiygi08UfQoMGq_4qeYbEjHsAxQk9fhX2rlwJlUHS3FzSkp4TRte6OQwLwNMnwot5G5hV4SolKnOQX5x7kAsTaCEgzkFuZsePT4iX06knEP17unS0");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Gaming</p>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBZ8P7dM2bm0_3nyK_u50uJEh-O42YGB1PfESbC7XHaUyK0k5Xz_qDqFDwwijP-XdnBL0HBbdgYIkHXknWk4KoVC6TDM1c3fejxjJBnKJhN0wgZ3tWc_UTfe3BzOChZ-pDDmqVpg9a47GIH6LT7Vd1jhbExyKWHtoyjUxTVEHAx2bxq1MiPylcXihCLiWAy9-QGMPvZYN2qazA42R0a7J0JvM8erpP3T9IHmDzu8mvP3hIbaX0ShzRTL56PkSJjTq4YMiOihRgSC3M");'
+                ></div>
+                <p class="text-[#111118] text-base font-medium leading-normal">Smart Home</p>
+              </div>
+            </div>
+            <h2 class="text-[#111118] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Featured Products</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdEQNsJTJQ8n5v2prNNo3BxHYQ2d6ln7nRrDJ0cf4ZHjrJvbyGKqPjQ56W60e_SZ6HljdBAJgxac408UI86vKpWDgMvRi8qTTjPnDVK9vURapTBtF3XGTFfWsQ3kw84OzsCQyznmOxnsoIL55GqrFi7MEMcJw6CW_rKCeO1CEPsac6x5W1D85ZnOqzrE65w8znSSyKsP0GVHEtq1qRoKSGGKuwYRMQ9stSnYTHpg7065MM-XnCTzPs0N0sT67CAgzX16m3oenfBxU");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">TechPro X500</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">The ultimate smartphone experience.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDIvdth47kJ962CC-CCRbFwOg3pbzf8324kytJFYqGF96YhuRreW3CUtWuUDhALvzZ_oMFOyWdIYBrGYykyi-kVIpJsaA7diRwsPzcVVmVcBnMz8MSKM-GM4gPX9MaOp0nzFXVVaWeACt7kU3MgCzYi0HShvbtaRm_5qfJGYTTfvigxU9b1-qs4_XkrycqjrZGvpiixJn-bMv4njrAcAIVyZBtEfBcvPAK0Iy5nz4Jmqq1PkK5NhhbpCbMUp2OzwJGiWNqAF7LUiXE");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">UltraBook 9000</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">Powerful and sleek laptop for professionals.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBgCdEgnhkxXsSOScdjXKGvflW8JF9LvLvvKU2_js1xDl-eo1VbL5bP3qlL9BOWkeOTNAKKI0K5WaUNytsh5yAJcSjW4-gbW6BjdnCiMWUlJzvtRZv7POs57pdcd7Z1crynNsbsyyHv37sJ8AJoePiD-V8rAgO81OiFx0U_i7qouG8sWGpHS9TXDRO1ajZUFKG1bBEXkCCn2GeMEK5Tqkj5Buzyu__lpuLetSuXV3usmZ3Fd-rThKajDvkVyimWwcJ0pCf89TcXdek");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">SoundWave Headphones</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">Immersive audio experience with noise cancellation.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3aDSKm_Go8k1p2o3a2VOtbHW_i1xhk5tr2OAqzUww9ww8SCXMfNmim3mp9COFrRQO1g8nCa_B9zubEPPsa1pM-AhRUVWdFSEGbaH16M0qKy_NCFzK94F_6WKxfHa0yFg0tf_-yUmp5UsGZesG5J4UAbZitxUoOPRC48_jPjQH9qQHL5hrmSg3-S2gr4E0BRBHSIxXuk16lBgwrpc0irujAlgQURcsFR-iR5V-e-Wt8UEBB9_UEDVrAC-jqsuSkgS8TJs97gvEC40");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">SmartWatch Pro</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">Stay connected and track your fitness.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBMZRDNFQBcdm2sYTLdPb5CX3-VDx3vUBMNqsk5NNK910CByWrYhgJz4h48tKvwEx0ufBPbI7OUeAXz4i705KpA4UL3kbvlVGLWIHpb0i5kuNA8sqXO80XjsJcNUT9XjXsBNST2ds-OpUWEpp0pxWeeDIpBg5Ed_uEAuiShZklvBCNz5ZjsR0r-YjnPaOFABAQUSQcWlvqOw03P9aSSeT5RJIPxQglZ7uQ78SRmjKyzZ9cWYzxOFSTrXvpWsO03LCsmsB88eWYbTsg");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">Gaming Rig X</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">High-performance gaming desktop.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAI-x_ZUUmh0NmawxfLQD7u2cHzAi2HtcRBAv5TMq5g68zpOjwPF_z_PZ3nf1-RDxBNn0UXU3s-1FuCVnblEbWTZWKo2PbiIbl-xiDPCPhJw1yycCplF20UbdNYIk2C80OlhwZeUMQ_V_oveujkyD8uleldrf65OK5yZsLK0J3L8MjdJx0IlftFMPaEhXPwpCHBEmzTTfArIf_gRb7SoUsZCs7WQzQwf5qAFS9L194kIcEn5f07-gwMzKuUGI8ipaedoPexXHq_wz8");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">PowerBank 20000</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">Charge your devices on the go.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAhpRVqcMEBFdMGjP1XAhRAm5ZNuQxyqO5dZUtg_b-XekRKJFBDiLkNru9bxMgPUPijdm3pjikUndI6iHoH7_HwBeZ4ODsNYOQ2WCweDkE_wYaC5TbJG2rlLOaHiZ11v40rN1iczZv3ghZzrRsMGi-O3b7v_MKdYEeV5and_yjzsy4aVaZBpVzNyVre4qPM7FH_JTuPgqzITIeeNMOuQisEL01k2NhOg-7JlAtGiU4rdTKTlChVc7FNMSPjkMlTCJm47ohul7daNH4");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">Wireless Mouse</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">Ergonomic wireless mouse for comfort.</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAp1J4KeAerMhntUFiq1DhQPCWCNRuARS-wBhqo2y0ii70ZQsACbFC_9VwQ5XdNrTjDkY4l7SFCyW_6P5ljAOyduLGMx1KkWx_SxtyAueahTfXYpZXOjq7osoQVWp737XQymeDYqwHHnqSzg91wD0XvnZknxm-AjhDlbVqbJt07SjdJA3RUE3lKj8J-grmj00ROVxwKxDSJ40cx9FrCaangoax9N4gYmiJsnQPLAlfJzgsC7w9l4BVqQ38_5z_6S7-zOrgclyywkhA");'
+                ></div>
+                <div>
+                  <p class="text-[#111118] text-base font-medium leading-normal">Keyboard Pro</p>
+                  <p class="text-[#636488] text-sm font-normal leading-normal">Mechanical keyboard for precise typing.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
