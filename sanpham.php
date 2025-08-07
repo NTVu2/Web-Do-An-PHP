@@ -188,14 +188,62 @@
                 height: 20px;
             }
 
-            .icon {
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                border: 2px solid var(--lego-white);
-            }
+                    .icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--lego-white);
+        }
 
-            /* Product Container - LEGO Style */
+        /* Category Dropdown - LEGO Style */
+        #sort-bar {
+            background: linear-gradient(135deg, var(--lego-blue) 0%, #1976D2 100%);
+            padding: 1.5rem 2rem;
+            margin-top: 0;
+            border-bottom: 6px solid var(--lego-yellow);
+            box-shadow: var(--shadow-brick);
+        }
+
+        .sort-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Category Buttons - LEGO Style */
+        .category-btn {
+            background: var(--lego-green);
+            color: var(--lego-white);
+            padding: 0.75rem 1.25rem;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-brick);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+
+        .category-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--lego-white);
+            background: var(--lego-yellow);
+            color: var(--lego-black);
+        }
+
+        .category-btn.active {
+            background: var(--lego-orange);
+            color: var(--lego-white);
+            border-color: var(--lego-white);
+        }
+
+        /* Product Container - LEGO Style */
             .sanpham-container {
                 max-width: 1400px;
                 margin: 2rem auto;
@@ -631,6 +679,29 @@
         </div>
     </nav>
 
+    <!-- Category Navigation -->
+    <div id="sort-bar">
+        <div class="sort-links">
+            <?php
+            include 'db_connect.php';
+            $sql_loaihang = "SELECT * FROM loaihang";
+            $result_loaihang = mysqli_query($con, $sql_loaihang);
+
+            if (mysqli_num_rows($result_loaihang) > 0) {
+                while ($row_loaihang = mysqli_fetch_assoc($result_loaihang)) {
+                    $tenloaihang = $row_loaihang['Tenloaihang'];
+                    $maloaihang = $row_loaihang['Maloaihang'];
+                    // Thêm class 'active' nếu danh mục đang được chọn
+                    $activeClass = (isset($_GET['category']) && $_GET['category'] == $maloaihang) ? 'active' : '';
+                    echo "<a href='allsp.php?category=$maloaihang' class='category-btn $activeClass'>$tenloaihang</a>";
+                }
+            }
+
+            mysqli_close($con);
+            ?>
+        </div>
+    </div>
+
         <!-- Nội dung sản phẩm -->
         <div class="sanpham-container">
             <div class="container">
@@ -959,8 +1030,8 @@ function orderNow(mahang, tenhang, dongia, anh, soluongton) {
             moveImage(e);
         }
     });
-    // Gọi đến server để thực hiện thanh toán
-    fetch('thanhtoan1.php', {
+            // Gọi đến server để thực hiện thanh toán
+        fetch('thanhtoan1.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -980,6 +1051,8 @@ function orderNow(mahang, tenhang, dongia, anh, soluongton) {
         .catch(error => {
             showNotification("Có lỗi xảy ra, vui lòng thử lại!", false);
         });
+
+        // Category buttons functionality - no JavaScript needed for simple navigation
 
     </script>
 

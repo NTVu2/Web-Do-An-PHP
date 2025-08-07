@@ -256,7 +256,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
             border: 2px solid var(--lego-white);
         }
 
-        /* Sort Bar - LEGO Style */
+        /* Category Dropdown - LEGO Style */
         #sort-bar {
             background: linear-gradient(135deg, var(--lego-blue) 0%, #1976D2 100%);
             padding: 1.5rem 2rem;
@@ -272,43 +272,8 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
             flex-wrap: wrap;
         }
 
-        .sort-links a {
-            background: var(--lego-white);
-            color: var(--lego-black);
-            text-decoration: none;
-            padding: 0.75rem 1.25rem;
-            border-radius: 15px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-brick);
-            border: 3px solid transparent;
-            position: relative;
-        }
-
-        .sort-links a:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--lego-yellow);
-        }
-
-        .sort-links a.active {
-            background: var(--lego-yellow);
-            border-color: var(--lego-orange);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        /* Dropdown Danh mục - LEGO Style */
-        #category-dropdown {
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-        }
-
-        #category-dropdown span {
+        /* Category Buttons - LEGO Style */
+        .category-btn {
             background: var(--lego-green);
             color: var(--lego-white);
             padding: 0.75rem 1.25rem;
@@ -320,51 +285,23 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
             box-shadow: var(--shadow-brick);
             border: 3px solid transparent;
             transition: all 0.3s ease;
-            display: block;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 0.5rem;
         }
 
-        #category-dropdown:hover span {
+        .category-btn:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
             border-color: var(--lego-white);
-        }
-
-        #category-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            min-width: 200px;
-            background: var(--lego-white);
-            border: 4px solid var(--lego-blue);
-            border-radius: 15px;
-            box-shadow: var(--shadow-hover);
-            z-index: 99;
-            margin-top: 0.5rem;
-        }
-
-        #category-list a {
-            display: block;
-            padding: 1rem 1.25rem;
-            text-decoration: none;
-            color: var(--lego-black);
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border-bottom: 2px solid var(--lego-light-gray);
-        }
-
-        #category-list a:last-child {
-            border-bottom: none;
-        }
-
-        #category-list a:hover {
             background: var(--lego-yellow);
             color: var(--lego-black);
-            transform: translateX(5px);
         }
 
-        #category-list a.active {
+        .category-btn.active {
             background: var(--lego-orange);
             color: var(--lego-white);
+            border-color: var(--lego-white);
         }
 
         /* Product Section - LEGO Style */
@@ -711,40 +648,28 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
         </div>
     </header>
 
-        <div id="sort-bar">
-            <!-- Các liên kết sắp xếp -->
-            <div class="sort-links">
-                <a href="?<?php echo (isset($_GET['category']) ? "category=" . $_GET['category'] . "&" : "");
-                            echo (isset($_GET['search']) ? "search=" . $_GET['search'] . "&" : ""); ?>sort=ban_chay" class="<?php if (isset($_GET['sort']) && $_GET['sort'] == 'ban_chay') echo 'active'; ?>">Sản Phẩm Bán Chạy</a>
-                <a href="?<?php echo (isset($_GET['category']) ? "category=" . $_GET['category'] . "&" : "");
-                            echo (isset($_GET['search']) ? "search=" . $_GET['search'] . "&" : ""); ?>sort=gia_thap_den_cao" class="<?php if (isset($_GET['sort']) && $_GET['sort'] == 'gia_thap_den_cao') echo 'active'; ?>">Giá Thấp đến Cao</a>
-                <a href="?<?php echo (isset($_GET['category']) ? "category=" . $_GET['category'] . "&" : "");
-                            echo (isset($_GET['search']) ? "search=" . $_GET['search'] . "&" : ""); ?>sort=gia_cao_den_thap" class="<?php if (isset($_GET['sort']) && $_GET['sort'] == 'gia_cao_den_thap') echo 'active'; ?>">Giá Cao đến Thấp</a>
-                <div id="category-dropdown">
-                    <span>Khác</span>
-                    <div id="category-list" style="display: none;">
-                        <?php
-                        include 'db_connect.php';
-                        $sql_loaihang = "SELECT * FROM loaihang";
-                        $result_loaihang = mysqli_query($con, $sql_loaihang);
+    <!-- Category Navigation -->
+    <div id="sort-bar">
+        <div class="sort-links">
+            <?php
+            include 'db_connect.php';
+            $sql_loaihang = "SELECT * FROM loaihang";
+            $result_loaihang = mysqli_query($con, $sql_loaihang);
 
-                        if (mysqli_num_rows($result_loaihang) > 0) {
-                            while ($row_loaihang = mysqli_fetch_assoc($result_loaihang)) {
-                                $tenloaihang = $row_loaihang['Tenloaihang'];
-                                $maloaihang = $row_loaihang['Maloaihang'];
-                                // Thêm class 'active' nếu danh mục đang được chọn
-                                $activeClass = (isset($_GET['category']) && $_GET['category'] == $maloaihang) ? 'active' : '';
-                                echo "<a href='?category=$maloaihang" . (isset($_GET['search']) ? "&search=" . $_GET['search'] : "") . "' class='$activeClass'>$tenloaihang</a>";
-                            }
-                        }
+            if (mysqli_num_rows($result_loaihang) > 0) {
+                while ($row_loaihang = mysqli_fetch_assoc($result_loaihang)) {
+                    $tenloaihang = $row_loaihang['Tenloaihang'];
+                    $maloaihang = $row_loaihang['Maloaihang'];
+                    // Thêm class 'active' nếu danh mục đang được chọn
+                    $activeClass = (isset($_GET['category']) && $_GET['category'] == $maloaihang) ? 'active' : '';
+                    echo "<a href='?category=$maloaihang" . (isset($_GET['search']) ? "&search=" . $_GET['search'] : "") . "' class='category-btn $activeClass'>$tenloaihang</a>";
+                }
+            }
 
-                        mysqli_close($con);
-                        ?>
-                    </div>
-                </div>
-            </div>
-
+            mysqli_close($con);
+            ?>
         </div>
+    </div>
 
     <!-- Product Section -->
     <section class="lego-products" id="product-section">
@@ -770,15 +695,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $offset = ($page - 1) * $limit;
 
-            // Truy vấn Sản phẩm bán chạy (đã được giao thành công)
-            $bestSellingQuery = "SELECT h.Mahang, SUM(ct.Soluong) AS TotalSold
-                                         FROM hang h
-                                         JOIN chitiethd ct ON h.Mahang = ct.Mahang
-                                         JOIN hoadon hd ON ct.SohieuHD = hd.SohieuHD
-                                         WHERE hd.Trangthai = 'Giao hàng thành công'
-                                         GROUP BY h.Mahang
-                                         ORDER BY TotalSold DESC LIMIT 5";
-            $bestSellingResult = $con->query($bestSellingQuery);
+
 
 
             // SQL query để lấy các sản phẩm
@@ -802,34 +719,8 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
             }
 
 
-            // Sắp xếp sản phẩm dựa trên lựa chọn
-            $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
-            switch ($sort) {
-                case 'gia_thap_den_cao':
-                    $sql .= " ORDER BY Dongia ASC";
-                    break;
-                case 'gia_cao_den_thap':
-                    $sql .= " ORDER BY Dongia DESC";
-                    break;
-                case 'ban_chay':
-                    // Sử dụng kết quả truy vấn sản phẩm bán chạy để lọc sản phẩm chính
-                    $bestSellingProducts = [];
-                    while ($row = $bestSellingResult->fetch_assoc()) {
-                        $bestSellingProducts[] = $row['Mahang']; // Sử dụng Mahang để đảm bảo tính duy nhất
-                    }
-
-                    if (!empty($bestSellingProducts)) {
-                        $inClause = "'" . implode("','", $bestSellingProducts) . "'";
-                        $sql .= " AND Mahang IN ($inClause)"; // Lọc sản phẩm dựa trên danh sách bán chạy (sử dụng Mahang)
-                        $sql .= " ORDER BY FIELD(Mahang, $inClause)"; // Sắp xếp theo thứ tự trong danh sách bán chạy (sử dụng Mahang)
-                    } else {
-                        $sql .= " ORDER BY Soluongton DESC"; // Nếu không có sản phẩm bán chạy, sắp xếp theo số lượng tồn
-                    }
-                    break;
-                default: // Mặc định là bán chạy 
-                    $sql .= " ORDER BY Soluongton DESC"; // Nếu không có sản phẩm bán chạy, sắp xếp theo số lượng tồn
-                    break;
-            }
+            // Sắp xếp sản phẩm theo thứ tự mặc định
+            $sql .= " ORDER BY hang.Mahang ASC";
             // Giới hạn sản phẩm theo phân trang sau khi đã sắp xếp
             $sql .= " LIMIT $limit OFFSET $offset";
 
@@ -1012,19 +903,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : '';
             });
         });
 
-        // Category dropdown functionality
-        const categoryDropdown = document.getElementById('category-dropdown');
-        const categoryList = document.getElementById('category-list');
-
-        if (categoryDropdown && categoryList) {
-            categoryDropdown.addEventListener('mouseover', () => {
-                categoryList.style.display = 'block';
-            });
-
-            categoryDropdown.addEventListener('mouseout', () => {
-                categoryList.style.display = 'none';
-            });
-        }
+        // Category buttons functionality - no JavaScript needed for simple navigation
 
         // Smooth scroll to products on page load if needed
         window.addEventListener('load', function() {
