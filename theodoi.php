@@ -27,14 +27,53 @@ if (isset($_GET['huy']) && isset($_GET['SohieuHD'])) {
 
         // Chỉ cho phép hủy khi trạng thái là "Đang xử lý"
         if ($Trangthai == "Đang xử lý") {
-            $sql_huy = "UPDATE hoadon SET Trangthai = 'Đã hủy' WHERE SohieuHD = ? AND id = ?";
-            $stmt_huy = $con->prepare($sql_huy);
-            $stmt_huy->bind_param("si", $SohieuHD_huy, $customerId);
+            // Bắt đầu transaction
+            $con->begin_transaction();
+            
+            try {
+                // Cập nhật trạng thái đơn hàng
+                $sql_huy = "UPDATE hoadon SET Trangthai = 'Đã hủy' WHERE SohieuHD = ? AND id = ?";
+                $stmt_huy = $con->prepare($sql_huy);
+                $stmt_huy->bind_param("si", $SohieuHD_huy, $customerId);
+                
+                if (!$stmt_huy->execute()) {
+                    throw new Exception("Lỗi khi cập nhật trạng thái đơn hàng: " . $con->error);
+                }
+                
+                // Hoàn trả số lượng tồn kho
+                $sqlDetails = "SELECT Mahang, Soluong FROM chitiethd WHERE SohieuHD = ?";
+                $stmtDetails = $con->prepare($sqlDetails);
+                $stmtDetails->bind_param("s", $SohieuHD_huy);
+                $stmtDetails->execute();
+                $resultDetails = $stmtDetails->get_result();
 
-            if ($stmt_huy->execute()) {
-                $_SESSION['thongbao'] = "Đơn hàng $SohieuHD_huy đã được hủy thành công!";
-            } else {
-                $_SESSION['thongbao'] = "Lỗi khi hủy đơn hàng $SohieuHD_huy: " . $stmt_huy->error;
+                while ($row = $resultDetails->fetch_assoc()) {
+                    $Mahang = $row['Mahang'];
+                    $SoluongBan = $row['Soluong'];
+
+                    // Cộng lại số lượng đã bán vào số lượng tồn
+                    $updateHang = "UPDATE hang SET Soluongton = Soluongton + ? WHERE Mahang = ?";
+                    $stmtUpdateHang = $con->prepare($updateHang);
+                    $stmtUpdateHang->bind_param("is", $SoluongBan, $Mahang);
+                    
+                    if (!$stmtUpdateHang->execute()) {
+                        throw new Exception("Lỗi khi hoàn trả số lượng cho sản phẩm $Mahang: " . $con->error);
+                    }
+                    
+                    $stmtUpdateHang->close();
+                }
+                
+                $stmtDetails->close();
+                
+                // Commit transaction
+                $con->commit();
+                
+                $_SESSION['thongbao'] = "Đơn hàng $SohieuHD_huy đã được hủy thành công và số lượng tồn kho đã được hoàn trả!";
+                
+            } catch (Exception $e) {
+                // Rollback nếu có lỗi
+                $con->rollback();
+                $_SESSION['thongbao'] = "Lỗi khi hủy đơn hàng $SohieuHD_huy: " . $e->getMessage();
             }
         } else {
             $_SESSION['thongbao'] = "Bạn chỉ có thể hủy đơn hàng khi trạng thái là 'Đang xử lý'.";

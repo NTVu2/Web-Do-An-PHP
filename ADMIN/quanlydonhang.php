@@ -61,6 +61,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
 
+    // Lấy trạng thái cũ trước khi cập nhật
+    $getOldStatus = "SELECT Trangthai FROM hoadon WHERE SohieuHD = ?";
+    $stmtOldStatus = $con->prepare($getOldStatus);
+    $stmtOldStatus->bind_param("s", $SohieuHD);
+    $stmtOldStatus->execute();
+    $resultOldStatus = $stmtOldStatus->get_result();
+    $oldStatus = $resultOldStatus->fetch_assoc()['Trangthai'];
+    $stmtOldStatus->close();
+
     // Cập nhật trạng thái đơn hàng
     $sql = "UPDATE hoadon SET Trangthai = ? WHERE SohieuHD = ?";
     $stmt = $con->prepare($sql);
@@ -68,9 +77,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt->execute()) {
         $_SESSION['message'] = "Trạng thái đơn hàng đã được cập nhật.";
-
-        // Kiểm tra nếu trạng thái là 'Giao hàng thành công' và cập nhật số lượng tồn kho
-        if ($Trangthai == "Giao hàng thành công") {
+        
+        // Logic đơn giản: Chỉ hoàn trả số lượng khi hủy đơn hàng
+        
+        // Hoàn trả số lượng khi chuyển sang "Đã hủy"
+        if ($Trangthai == "Đã hủy" && $oldStatus != "Đã hủy") {
             $sqlDetails = "SELECT Mahang, Soluong FROM chitiethd WHERE SohieuHD = ?";
             $stmtDetails = $con->prepare($sqlDetails);
             $stmtDetails->bind_param("s", $SohieuHD);
@@ -81,13 +92,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $Mahang = $row['Mahang'];
                 $SoluongBan = $row['Soluong'];
 
-                // Trừ số lượng bán vào số lượng tồn
+                // Cộng lại số lượng tồn kho
+                $updateHang = "UPDATE hang SET Soluongton = Soluongton + ? WHERE Mahang = ?";
+                $stmtUpdate = $con->prepare($updateHang);
+                $stmtUpdate->bind_param("is", $SoluongBan, $Mahang);
+                
+                if (!$stmtUpdate->execute()) {
+                    $_SESSION['message'] .= " Lỗi cập nhật tồn kho cho $Mahang: " . $con->error;
+                } else {
+                    $_SESSION['message'] .= " Hoàn trả $SoluongBan cho $Mahang. ";
+                }
+                
+                $stmtUpdate->close();
+            }
+            $stmtDetails->close();
+            
+            $_SESSION['message'] .= " Số lượng tồn kho đã được hoàn trả.";
+        }
+        
+        // Trừ lại số lượng nếu chuyển từ "Đã hủy" sang trạng thái khác
+        if ($oldStatus == "Đã hủy" && $Trangthai != "Đã hủy") {
+            $sqlDetails = "SELECT Mahang, Soluong FROM chitiethd WHERE SohieuHD = ?";
+            $stmtDetails = $con->prepare($sqlDetails);
+            $stmtDetails->bind_param("s", $SohieuHD);
+            $stmtDetails->execute();
+            $resultDetails = $stmtDetails->get_result();
+
+            while ($row = $resultDetails->fetch_assoc()) {
+                $Mahang = $row['Mahang'];
+                $SoluongBan = $row['Soluong'];
+
+                // Trừ lại số lượng tồn kho
                 $updateHang = "UPDATE hang SET Soluongton = Soluongton - ? WHERE Mahang = ?";
                 $stmtUpdate = $con->prepare($updateHang);
                 $stmtUpdate->bind_param("is", $SoluongBan, $Mahang);
-                $stmtUpdate->execute();
+                
+                if (!$stmtUpdate->execute()) {
+                    $_SESSION['message'] .= " Lỗi trừ tồn kho cho $Mahang: " . $con->error;
+                } else {
+                    $_SESSION['message'] .= " Trừ $SoluongBan cho $Mahang. ";
+                }
+                
+                $stmtUpdate->close();
             }
             $stmtDetails->close();
+            
+            $_SESSION['message'] .= " Số lượng tồn kho đã được trừ lại.";
         }
     } else {
         $_SESSION['message'] = "Lỗi: " . $con->error;
@@ -524,13 +574,17 @@ $result = $con->query($sql);
                                 </select>
                                 <button type="submit" <?php if ($row['Trangthai'] == 'Giao hàng thành công' || $row['Trangthai'] == 'Đã hủy') echo 'disabled'; ?>>Cập nhật</button>
                             </form>
-                        </td>
-                        <td>
+                            
+                            <?php if ($row['Trangthai'] != 'Đã hủy'): ?>
+                                <button onclick="cancelOrder('<?php echo $row['SohieuHD']; ?>')" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-top: 5px;">Hủy đơn hàng</button>
+                            <?php endif; ?>
+                            
                             <?php if ($row['Trangthai'] == 'Giao hàng thành công'): ?>
                                 <a class="link-action" href="indonhang.php?SohieuHD=<?php echo $row['SohieuHD']; ?>">In hóa đơn</a>
                             <?php else: ?>
                                 <span class="disabled-action">In hóa đơn</span>
                             <?php endif; ?>
+                            
                             <form action="quanlydonhang.php" method="POST" style="display:inline;">
                                 <input type="hidden" name="SohieuHD_xoa" value="<?php echo $row['SohieuHD']; ?>">
                                 <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa hóa đơn này?');" style="background-color: #f15050; color: white; height: 28px;">Xóa </button>
@@ -553,6 +607,31 @@ $result = $con->query($sql);
                     messageDiv.style.display = "none";
                 }
             }, 3000);
+            
+            // Hàm hủy đơn hàng
+            function cancelOrder(sohieuHD) {
+                if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này? Số lượng tồn kho sẽ được cập nhật lại.')) {
+                    // Tạo form ẩn để gửi request
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = 'quanlydonhang.php';
+                    
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'SohieuHD';
+                    input.value = sohieuHD;
+                    form.appendChild(input);
+                    
+                    var statusInput = document.createElement('input');
+                    statusInput.type = 'hidden';
+                    statusInput.name = 'Trangthai';
+                    statusInput.value = 'Đã hủy';
+                    form.appendChild(statusInput);
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
         </script>
     </main>
 </body>

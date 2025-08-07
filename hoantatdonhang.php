@@ -32,6 +32,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $con->begin_transaction();
 
     try {
+        // Kiểm tra và trừ số lượng tồn kho ngay khi đặt hàng
+        foreach ($selectedProducts as $product) {
+            if (!isset($product['mahang'])) {
+                throw new Exception("Sản phẩm không có mã hàng. Vui lòng kiểm tra lại.");
+            }
+
+            $Mahang = $product['mahang'];
+            $quantity = isset($product['quantity']) ? $product['quantity'] : 0;
+
+            // Kiểm tra số lượng tồn kho hiện tại
+            $checkStock = "SELECT Soluongton FROM hang WHERE Mahang = ?";
+            $stmtCheckStock = $con->prepare($checkStock);
+            $stmtCheckStock->bind_param("s", $Mahang);
+            $stmtCheckStock->execute();
+            $resultStock = $stmtCheckStock->get_result();
+            
+            if ($resultStock->num_rows == 0) {
+                throw new Exception("Không tìm thấy sản phẩm với mã: " . $Mahang);
+            }
+            
+            $currentStock = $resultStock->fetch_assoc()['Soluongton'];
+            
+            // Kiểm tra xem có đủ hàng không
+            if ($currentStock < $quantity) {
+                throw new Exception("Sản phẩm " . $Mahang . " chỉ còn " . $currentStock . " trong kho, không đủ cho đơn hàng.");
+            }
+
+            // Trừ số lượng tồn kho ngay lập tức
+            $updateStock = "UPDATE hang SET Soluongton = Soluongton - ? WHERE Mahang = ?";
+            $stmtUpdateStock = $con->prepare($updateStock);
+            $stmtUpdateStock->bind_param("is", $quantity, $Mahang);
+            
+            if (!$stmtUpdateStock->execute()) {
+                throw new Exception("Lỗi khi cập nhật số lượng tồn kho cho sản phẩm: " . $Mahang);
+            }
+            
+            $stmtCheckStock->close();
+            $stmtUpdateStock->close();
+        }
+
         // Nếu phương thức thanh toán là MoMo, thực hiện thanh toán trước
         if ($paymentMethod == 'momo') {
             $orderId = time() . "" . $sohieuHD;
